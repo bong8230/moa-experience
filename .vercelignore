@@ -1,0 +1,12 @@
+.git/
+.vercel/
+.env*
+**/.env*
+**/*.env
+**/*.env.txt
+preview/data/
+infra/
+**/*.test.js
+docs/
+coverage/
+*.log

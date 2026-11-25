@@ -1,0 +1,27 @@
+# secrets: Kakao keys live only in preview/.env (never commit)
+.env
+.env.*
+preview/.env
+
+# runtime data: sessions, favorites, marks, Kakao place cache, server logs
+preview/data/
+
+# dependencies / build / tool state
+node_modules/
+.vercel/
+coverage/
+*.log
+*.tmp
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+.vercel
+.env*
+*.env
+*.env.txt
+public/

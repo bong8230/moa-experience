@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F2F4F8">
+<script data-theme-init>try{var t=localStorage.getItem('moa:theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<title>모아체험</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#16213A; --ink-2:#4A5872; --ink-3:#7B879C;
+  --paper:#F2F4F8; --card:#FFFFFF; --line:#DCE2EC; --line-2:#E9EDF3;
+  --cobalt:#2347C5; --cobalt-soft:#E8EDFB;
+  --stamp:#D23A3A; --stamp-soft:#FCEBEB;
+  --later:#5B6B86; --later-soft:#EEF1F6;
+  --done:#1D7348; --done-soft:#E5F3EB; --done-line:#B9DEC8;
+  --hand:#8A5A00; --hand-soft:#FFF6E0; --hand-line:#E6C77A;
+  /* fills and surfaces that must not simply follow --ink/--card when the theme flips */
+  --cobalt-fill:#2347C5; --done-fill:#1D7348; --strong:#16213A; --on-strong:#FFFFFF; --track:#E4E8EF; --field:#FFFFFF;
+  --applied-stub:#D3ECDD; --chip-hover:#DCE4FA; --shadow:rgba(22,33,58,.14); --backdrop:rgba(22,33,58,.45);
+  color-scheme:light;
+  --r-lg:16px; --r-sm:10px;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+/* dark: follows the system unless the visitor chose a theme (data-theme on <html>) */
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+  --ink:#E8ECF5; --ink-2:#B3BDD0; --ink-3:#95A1B9;
+  --paper:#0F1524; --card:#182033; --line:#2C3650; --line-2:#232C42;
+  --cobalt:#9DB3FF; --cobalt-soft:#1F2B52; --cobalt-fill:#3F63E0;
+  --stamp:#FF8A8A; --stamp-soft:#40202A;
+  --later:#A9B6CE; --later-soft:#1D2538;
+  --done:#6FD3A0; --done-soft:#143327; --done-line:#2B6A4B; --done-fill:#23805A;
+  --hand:#F0C866; --hand-soft:#3A2F12; --hand-line:#7A6220;
+  --strong:#E8ECF5; --on-strong:#10182B; --track:#0B101C; --field:#111828;
+  --applied-stub:#1B4634; --chip-hover:#2A3970; --shadow:rgba(0,0,0,.5); --backdrop:rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+  --ink:#E8ECF5; --ink-2:#B3BDD0; --ink-3:#95A1B9;
+  --paper:#0F1524; --card:#182033; --line:#2C3650; --line-2:#232C42;
+  --cobalt:#9DB3FF; --cobalt-soft:#1F2B52; --cobalt-fill:#3F63E0;
+  --stamp:#FF8A8A; --stamp-soft:#40202A;
+  --later:#A9B6CE; --later-soft:#1D2538;
+  --done:#6FD3A0; --done-soft:#143327; --done-line:#2B6A4B; --done-fill:#23805A;
+  --hand:#F0C866; --hand-soft:#3A2F12; --hand-line:#7A6220;
+  --strong:#E8ECF5; --on-strong:#10182B; --track:#0B101C; --field:#111828;
+  --applied-stub:#1B4634; --chip-hover:#2A3970; --shadow:rgba(0,0,0,.5); --backdrop:rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 var(--font);letter-spacing:-.01em;font-feature-settings:"tnum";-webkit-font-smoothing:antialiased}
+h1,h2,h3,.title,.brand,.stub .d{letter-spacing:-.025em}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--cobalt)}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 72px}
+
+/* top */
+.top{display:flex;align-items:center;justify-content:space-between;padding:18px 0 6px}
+.brand{font-weight:700;font-size:18px;letter-spacing:-.4px}
+.brand b{color:var(--cobalt)}
+.btn{min-height:44px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:0 16px;cursor:pointer;font-weight:500;font-size:14px;white-space:nowrap}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.kakao-login{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 16px;border:none;border-radius:12px;background:#FEE500;color:rgba(0,0,0,.85);font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap}
+.kakao-login svg{width:18px;height:18px;flex:none}
+.kakao-login:disabled{background:#F1F1F1;color:#9A9A9A;cursor:not-allowed}
+.kakao-login:disabled svg path{fill:#B5B5B5}
+.account{display:flex;align-items:center;gap:10px}
+.theme-toggle{display:grid;place-items:center;width:44px;height:44px;border:none;background:none;border-radius:10px;color:var(--ink-2);cursor:pointer}
+.theme-toggle:hover{background:var(--line-2);color:var(--ink)}
+.theme-toggle svg{width:20px;height:20px}
+.theme-toggle .moon,:root[data-theme="dark"] .theme-toggle .sun{display:none}
+:root[data-theme="dark"] .theme-toggle .moon{display:block}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-toggle .sun{display:none}
+  :root:not([data-theme="light"]) .theme-toggle .moon{display:block}
+}
+.who{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--ink);border:none;background:none;padding:0 4px;min-height:44px;cursor:pointer;border-radius:8px;font-family:inherit}
+.who:hover .nick{text-decoration:underline;text-underline-offset:3px}
+.who .nick{max-width:10em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who[aria-expanded="true"]{background:var(--line-2)}
+.who .caret{width:10px;height:10px;flex:none;color:var(--ink-3)}
+.menu-wrap{position:relative}
+.account-menu{position:absolute;right:0;top:calc(100% + 4px);z-index:20;min-width:190px;padding:6px;margin:0;list-style:none;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px var(--shadow)}
+.account-menu a,.account-menu button{display:flex;align-items:center;width:100%;min-height:44px;padding:0 12px;border:none;background:none;border-radius:8px;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;text-align:left;cursor:pointer;font-family:inherit}
+.account-menu a:hover,.account-menu button:hover,.account-menu a:focus-visible,.account-menu button:focus-visible{background:var(--cobalt-soft);color:var(--cobalt)}
+.account-menu .admin-link{color:var(--cobalt)}
+.account-menu hr{border:none;border-top:1px solid var(--line-2);margin:4px 6px}
+.count{font-size:12px;color:var(--ink-3);text-align:right;margin:6px 0 0}
+.avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#FEE500;color:#3A2E00;font-size:13px;font-weight:700}
+.textbtn{border:none;background:none;padding:0 4px;min-height:44px;font-size:13px;color:var(--ink-3);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.btn.primary{background:var(--cobalt-fill);border-color:var(--cobalt-fill);color:#fff}
+.btn.ghost{background:transparent}
+.intro{padding:14px 0 18px}
+.intro h1{font-size:26px;line-height:1.25;letter-spacing:-.8px;margin:0 0 6px;font-weight:700}
+.intro p{margin:0;color:var(--ink-2);font-size:14px}
+
+/* sticky control bar */
+.controls{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px;border-bottom:1px solid transparent}
+.controls.stuck{border-bottom-color:var(--line)}
+.search{width:100%;height:48px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);padding:0 14px;font-size:16px}
+.tabs{display:flex;gap:2px;margin-top:10px;padding:3px;background:var(--track);border-radius:12px}
+.tab{flex:1;min-width:0;padding:0 4px;min-height:40px;border:none;background:transparent;border-radius:9px;cursor:pointer;font-weight:500;font-size:14px;color:var(--ink-2)}
+.tab[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 2px rgba(22,33,58,.12)}
+.tab .n{font-weight:400;opacity:.75;margin-left:4px}
+@media(max-width:440px){.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.tab{min-height:44px}}
+.freshness{margin:4px 0 10px;font-size:13px;color:var(--ink-2)}
+.application-form{display:flex;flex-wrap:wrap;align-items:end;gap:8px;margin:12px 0}
+.application-form label{display:grid;gap:4px;min-width:0;font-size:13px}
+.application-form input,.application-form select{min-height:40px;max-width:100%;border:1px solid var(--line);border-radius:8px;padding:4px 6px;background:var(--field);color:var(--ink);font:inherit;font-size:16px}
+.filterbar{display:flex;align-items:center;gap:8px;margin-top:10px}
+.filterbar .summary{flex:1;min-width:0;font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.filterbar .btn{min-height:40px;font-size:13px;padding:0 14px}
+.filterbar .summary.has-chips{visibility:hidden}
+.active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.active-filters button{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 10px 0 12px;border:1px solid var(--cobalt);background:var(--cobalt-soft);color:var(--cobalt);border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;max-width:100%}
+.active-filters button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.active-filters button svg{width:10px;height:10px;flex:none}
+.active-filters button:hover{background:var(--chip-hover)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#results.loading{opacity:.5;pointer-events:none}
+.skeleton{display:grid;grid-template-columns:78px 1fr;height:150px;background:var(--card);border:1px solid var(--line-2);border-radius:var(--r-lg);margin-bottom:10px;overflow:hidden}
+.skeleton i{background:var(--later-soft)}
+.skeleton div{padding:18px 16px}
+.skeleton b{display:block;height:12px;border-radius:6px;background:var(--line-2);margin-bottom:14px}
+.skeleton b:nth-child(1){width:34%}
+.skeleton b:nth-child(2){width:78%;height:16px}
+.skeleton b:nth-child(3){width:52%}
+.to-top{position:fixed;right:16px;bottom:76px;z-index:15;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:0 4px 14px var(--shadow);display:grid;place-items:center}
+.to-top svg{width:18px;height:18px}
+.prefs-status{margin:6px 0 0;font-size:12px;color:var(--ink-2)}
+.prefs-status.error{color:var(--stamp)}
+.prefs-status.ok{color:var(--done)}
+.prefs-status .linkish{font-size:12px}
+.panel-actions{grid-column:1 / -1;position:sticky;bottom:0;z-index:4;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px -16px -14px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);border-radius:0 0 var(--r-lg) var(--r-lg)}
+.panel-actions .btn{min-height:44px}
+.panel-actions #draft-apply{margin-left:auto;min-width:104px}
+.panel-msg{flex-basis:100%;margin:0;font-size:13px;color:var(--stamp)}
+.panel-msg:empty{display:none}
+
+/* filter panel */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:6px 16px 14px;margin-top:10px}
+.group{padding-top:12px}
+.group h2{font-size:13px;font-weight:700;margin:0 0 8px;color:var(--ink)}
+.group h2 span{font-weight:400;color:var(--ink-3);margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-height:40px;border:1px solid var(--line);background:var(--card);border-radius:8px;padding:0 13px;cursor:pointer;font-size:13px;color:var(--ink-2)}
+.chip.active{background:var(--cobalt-fill);border-color:var(--cobalt-fill);color:#fff}
+.locate{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.locate .btn{min-height:40px;font-size:13px}
+.place-form{display:flex;gap:6px;flex:1;min-width:220px}
+.place-form .field{height:40px;font-size:16px}
+.place-form .btn{flex:none}
+.near-set{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.near-set .chips{flex-wrap:nowrap}
+.check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);margin:10px 0 0;font-weight:400;min-height:32px}
+.check input{width:18px;height:18px}
+.status{margin:8px 0 0;font-size:12px;color:var(--ink-3)}
+.sortbar{display:flex;gap:2px;padding:2px;background:var(--track);border-radius:8px}
+.sortbar button{border:none;background:transparent;border-radius:6px;min-height:32px;padding:0 10px;font-size:12px;color:var(--ink-2);cursor:pointer}
+.sortbar button[aria-pressed="true"]{background:var(--card);color:var(--ink);font-weight:600}
+.dist{color:var(--cobalt);font-weight:600}
+.dist a{color:inherit;text-underline-offset:2px}
+.hint{font-size:12px;color:var(--ink-3)}
+
+/* list head */
+.listhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:18px 0 10px}
+.listhead strong{font-size:16px}
+.listhead .hint{text-align:right}
+
+/* ticket row */
+.ticket{display:grid;grid-template-columns:78px 1fr;background:var(--card);border-radius:var(--r-lg);margin-bottom:10px;position:relative;overflow:hidden;border:1px solid var(--line-2)}
+.stub{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:14px 6px;background:var(--later-soft);color:var(--later);position:relative;text-align:center}
+.stub::after{content:"";position:absolute;right:-1px;top:10px;bottom:10px;border-right:2px dotted var(--line)}
+.stub .d{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1.1}
+.stub .when{font-size:11px;line-height:1.35}
+.ticket.urgent .stub{background:var(--stamp-soft);color:var(--stamp)}
+.ticket.soon .stub{background:var(--cobalt-soft);color:var(--cobalt)}
+.ticket.unknown .stub{background:var(--card);color:var(--ink-3)}
+.ticket.unknown .stub .d{font-size:16px}
+.body{padding:13px 14px 12px;min-width:0}
+.meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;color:var(--ink-3)}
+.meta .src{color:var(--ink);font-weight:500}
+.title{font-size:15px;font-weight:700;line-height:1.4;margin:4px 0 6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all;overflow-wrap:anywhere}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.tag{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--ink-2)}
+.tag.hand{border-color:var(--hand-line);background:var(--hand-soft);color:var(--hand)}
+.addr{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;margin:0 0 6px;font-size:13px;color:var(--ink-2);line-height:1.45}
+.addr .street{overflow-wrap:anywhere;word-break:keep-all}
+.addr .street::before{content:"";display:inline-block;width:6px;height:6px;margin:0 6px 1px 1px;border-radius:50%;background:var(--ink-3);vertical-align:middle}
+.addr .from{font-size:11px;color:var(--ink-3)}
+.addr a{font-size:12px;color:var(--cobalt);text-underline-offset:2px;padding:4px 0}
+.benefit{font-size:13px;color:var(--ink-2);margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.foot .stats{flex-basis:100%;font-size:12px;color:var(--ink-3)}
+.foot .stats b{color:var(--ink-2);font-weight:500}
+.heart{width:44px;height:44px;border-radius:10px;border:none;background:var(--paper);cursor:pointer;font-size:18px;line-height:1;color:var(--ink-3)}
+.heart[aria-pressed="true"]{color:var(--stamp);background:var(--stamp-soft)}
+.open{display:inline-flex;align-items:center;flex:none;min-height:44px;padding:0 14px;border-radius:10px;background:var(--strong);color:var(--on-strong);text-decoration:none;font-size:13px;font-weight:600}
+.ticket.applied{border-color:var(--done-line);background:var(--done-soft)}
+.ticket.applied .stub{background:var(--applied-stub);color:var(--done)}
+.tag.done{border-color:var(--done-line);background:var(--card);color:var(--done);font-weight:500}
+.mark{min-height:44px;border:none;background:var(--paper);border-radius:10px;padding:0 12px;cursor:pointer;font-size:13px;font-weight:500;color:var(--ink-2)}
+.mark[aria-pressed="true"]{background:var(--done-fill);color:#fff}
+.ticket.applied .heart,.ticket.applied .mark:not([aria-pressed="true"]){background:var(--card)}
+.mark.exclude{color:var(--ink-3)}
+.foot .grow{flex:1}
+.linkish{background:none;border:none;padding:0;color:var(--cobalt);cursor:pointer;font-size:12px;text-decoration:underline;min-height:32px}
+.empty{background:var(--card);border:1px dashed var(--line);border-radius:var(--r-lg);padding:28px 18px;text-align:center;color:var(--ink-2)}
+.empty .btn{margin-top:12px}
+#more{width:100%;margin-top:4px}
+
+/* hand-check (non-automated) section */
+.handzone{border:1.5px dashed var(--hand-line);background:var(--hand-soft);border-radius:var(--r-lg);padding:16px}
+.handzone > p{margin:0 0 12px;font-size:14px;color:var(--ink-2)}
+.handzone > p strong{color:var(--hand)}
+.site{background:var(--card);border-radius:var(--r-lg);padding:15px 16px;margin-top:10px;border:1px solid var(--line-2)}
+.site h3{margin:0 0 4px;font-size:16px}
+.site .how{margin:0 0 8px;font-size:14px;color:var(--ink)}
+.site .why{margin:0 0 12px;font-size:12px;color:var(--ink-3)}
+.site .row{display:flex;flex-wrap:wrap;gap:8px}
+.site .row a.btn{display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)}
+.warn{font-size:12px;color:var(--stamp);margin:-4px 0 12px}
+
+.notice{margin-top:22px;font-size:12px;color:var(--ink-3);line-height:1.7}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--strong);color:var(--on-strong);padding:12px 18px;border-radius:12px;font-size:14px;z-index:20;max-width:calc(100% - 32px)}
+
+/* manual add dialog */
+dialog{border:none;border-radius:var(--r-lg);padding:0;width:min(440px,calc(100% - 24px));color:var(--ink);background:var(--card)}
+dialog::backdrop{background:var(--backdrop)}
+dialog form{padding:20px}
+dialog h2{margin:0 0 4px;font-size:18px}
+dialog .sub{margin:0 0 14px;font-size:13px;color:var(--ink-2)}
+label{display:block;font-size:13px;font-weight:500;margin:12px 0 6px}
+label span{font-weight:400;color:var(--ink-3)}
+.field{width:100%;height:46px;border:1px solid var(--line);border-radius:var(--r-sm);padding:0 12px;font-size:16px;background:var(--field);color:var(--ink)}
+.err{color:var(--stamp);font-size:13px;min-height:18px;margin:10px 0 0}
+.dlg-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+
+@media (max-width:759px){
+  .ticket{grid-template-columns:64px 1fr}
+  .stub .d{font-size:19px}
+  .body{padding:12px 12px 11px}
+  .foot{gap:6px;flex-wrap:nowrap}
+  .foot .stats{display:none}
+  .stats-m{display:block;font-size:12px;color:var(--ink-3);margin:0 0 8px}
+  .heart{width:40px;height:40px;flex:none}
+  .mark{min-height:40px;padding:0 10px;flex:none}
+  .open{min-height:40px;padding:0 12px}
+  .open .long{display:none}
+}
+@media (min-width:760px){
+  .stats-m{display:none}
+  .wrap{padding:0 24px 80px}
+  .controls{margin:0 -24px;padding-left:24px;padding-right:24px}
+  .intro h1{font-size:30px}
+  .ticket{grid-template-columns:96px 1fr}
+  .stub .d{font-size:26px}
+  .panel{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+  .tabs{max-width:560px}
+}
+@media (prefers-reduced-motion:no-preference){
+  #results{transition:opacity .15s}
+  .skeleton b,.skeleton i{animation:skeleton 1.2s ease-in-out infinite alternate}
+  @keyframes skeleton{from{opacity:1}to{opacity:.45}}
+  .heart{transition:transform .15s}
+  .heart:active{transform:scale(.9)}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="brand">모아<b>체험</b></div>
+    <div class="account">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="어두운 화면으로 바꾸기" title="화면 밝기 바꾸기">
+        <svg class="sun" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 1.8v2.2M10 16v2.2M1.8 10H4M16 10h2.2M4.2 4.2l1.5 1.5M14.3 14.3l1.5 1.5M4.2 15.8l1.5-1.5M14.3 5.7l1.5-1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg class="moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 12.2A7 7 0 0 1 7.8 3.5a7 7 0 1 0 8.7 8.7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="menu-wrap">
+        <button class="who" id="who" type="button" hidden aria-haspopup="menu" aria-expanded="false" aria-controls="account-menu"></button>
+        <ul class="account-menu" id="account-menu" role="menu" aria-label="내 계정" hidden>
+          <li role="none"><button type="button" role="menuitem" id="menu-nick">닉네임 바꾸기</button></li>
+          <li role="none" id="menu-admin-item" hidden><a role="menuitem" class="admin-link" id="menu-admin" href="/admin">관리자 대시보드</a></li>
+          <li role="none"><hr></li>
+          <li role="none"><button type="button" role="menuitem" id="menu-logout">로그아웃</button></li>
+        </ul>
+      </div>
+      <button class="kakao-login" id="auth" type="button"></button>
+    </div>
+  </header>
+
+  <section class="intro">
+    <h1>마감 전에 신청할 체험단</h1>
+    <p id="intro-line">여러 체험단 사이트의 공고를 마감이 가까운 순서로 모았어요.</p>
+  </section>
+
+  <div class="controls" id="controls">
+    <input id="search" class="search" type="search" aria-label="공고 검색" placeholder="상품명, 가게 이름, 동네로 검색" autocomplete="off">
+    <div class="tabs" role="tablist" aria-label="보기">
+      <button class="tab" id="tab-all" role="tab" type="button" aria-selected="true" data-view="all">전체 공고</button>
+      <button class="tab" id="tab-saved" role="tab" type="button" aria-selected="false" data-view="saved">찜<span class="n" id="saved-count"></span></button>
+      <button class="tab" id="tab-applications" role="tab" type="button" aria-selected="false" data-view="applications">내 신청</button>
+      <button class="tab" id="tab-digest" role="tab" type="button" aria-selected="false" data-view="digest">알림<span class="n" id="digest-count"></span></button>
+      <button class="tab" id="tab-hand" role="tab" type="button" aria-selected="false" data-view="hand">간편 응모</button>
+      <button class="tab" id="tab-excluded" role="tab" type="button" aria-selected="false" data-view="excluded">제외<span class="n" id="excluded-count"></span></button>
+    </div>
+    <div class="filterbar" id="filterbar">
+      <button class="btn" id="filter-toggle" type="button" aria-expanded="false" aria-controls="filter-panel">필터</button>
+      <div class="summary" id="summary">모든 공고</div>
+      <button class="btn ghost" id="reset" type="button">초기화</button>
+    </div>
+    <div class="active-filters" id="active-filters" aria-label="적용된 필터" hidden></div>
+    <p class="prefs-status" id="prefs-status" role="status" hidden></p>
+  </div>
+
+  <div class="panel" id="filter-panel" hidden>
+    <div class="group" style="grid-column:1 / -1"><h2>내 주변<span>기준 위치에서 반경 안의 방문형 공고</span></h2>
+      <div class="locate">
+        <button class="btn" id="locate" type="button">현재 위치 사용</button>
+        <form class="place-form" id="place-form"><input class="field" id="place-input" maxlength="50" placeholder="또는 동네 이름 (예: 수원 영통)" aria-label="기준 동네 이름"><button class="btn" type="submit">기준으로</button></form>
+      </div>
+      <div class="near-set"><span class="hint">반경</span><div id="radius" class="chips"></div><button class="btn ghost" id="near-clear" type="button" hidden>내 주변 해제</button></div>
+      <label class="check"><input type="checkbox" id="noloc"> 위치와 상관없는 배송형·기자단 공고도 함께 보기</label>
+      <p class="status" id="location-status">거리는 매장 위치를 찾은 공고는 매장까지, 나머지는 동·구 중심점까지의 대략적인 거리예요.</p>
+    </div>
+    <div class="group"><h2>시·도<span>여러 개 선택</span></h2><div id="regions" class="chips"></div></div>
+    <div class="group"><h2>리뷰 방식<span>미확인은 원본에서 확인</span></h2><div id="channels" class="chips"></div></div>
+    <div class="group"><h2>카테고리</h2><div id="chips" class="chips"></div></div>
+    <div class="group"><h2>체험단 사이트</h2><div id="platforms" class="chips"></div></div>
+    <div class="panel-actions">
+      <p class="panel-msg" id="panel-msg" role="alert"></p>
+      <button class="btn ghost" id="draft-reset" type="button">초기화</button>
+      <button class="btn" id="draft-cancel" type="button">취소</button>
+      <button class="btn primary" id="draft-apply" type="button">확인</button>
+    </div>
+  </div>
+
+  <section id="view-list">
+    <div class="listhead"><strong id="count">불러오는 중</strong><span class="hint" id="list-hint">마감 임박순, 최근 48시간 안에 확인한 공고</span><div class="sortbar" id="sortbar" hidden><button type="button" data-sort="deadline" aria-pressed="true">마감순</button><button type="button" data-sort="distance" aria-pressed="false">가까운 순</button></div></div>
+    <div class="hint" id="list-extra"></div>
+    <p class="freshness" id="freshness" role="status" hidden></p>
+    <div id="results" aria-live="polite"><div class="empty">공고를 불러오는 중이에요.</div></div>
+    <button class="btn" id="more" type="button" hidden>공고 더 보기</button>
+  </section>
+
+  <section id="view-hand" hidden>
+    <div class="handzone">
+      <p><strong>이 탭의 공고는 자동으로 모으지 않아요.</strong> 사이트 정책상 직접 열어서 확인해야 하는 곳이에요. 신청한 공고는 찜에 직접 추가하면 마감일을 함께 챙길 수 있어요.</p>
+
+      <article class="site">
+        <h3>무신사 체험단</h3>
+        <p class="how">무신사 앱이나 웹에서 공고를 고르고 바로 응모해요.</p>
+        <p class="why">무신사는 등록되지 않은 자동 수집 프로그램의 접근을 막고 있어서(robots.txt) 목록을 가져오지 않아요. 엔조잇은 무신사 공고를 함께 보여 주는 외부 집계 사이트인데, 이용약관이 자동 수집을 금지해서 링크만 연결해요.</p>
+        <div class="row">
+          <a class="btn" href="https://www.musinsa.com/preuser/main" target="_blank" rel="noopener noreferrer">무신사에서 보기</a>
+          <a class="btn" href="https://enjoeat.com/campaign/site/musinsa" target="_blank" rel="noopener noreferrer">엔조잇에서 보기</a>
+          <button class="btn primary add-manual" type="button" data-platform="musinsa">찜에 직접 추가</button>
+        </div>
+      </article>
+
+      <article class="site">
+        <h3>카카오톡 선물하기 체험단</h3>
+        <p class="how">카카오톡 앱에서 선물하기 → 체험단 탭으로 들어가 신청해요. 당첨 여부는 알림톡으로 와요.</p>
+        <p class="why">웹에 공개된 목록이 없고 앱 안에서만 볼 수 있어서 가져오지 않아요.</p>
+        <div class="row"><button class="btn primary add-manual" type="button" data-platform="kakao-gift">찜에 직접 추가</button></div>
+      </article>
+
+      <article class="site">
+        <h3>쿠팡 체험단</h3>
+        <p class="how">신청하는 방식이 아니에요. 쿠팡이 고른 회원에게 앱 알림, 문자, 이메일로 초대가 와요.</p>
+        <p class="why">공개 모집 목록이 없어서 가져올 공고가 없어요. 초대를 받으면 찜에 추가해 주문·리뷰 기한을 챙기세요.</p>
+        <p class="warn">초대 문자는 1577-7011에서만 와요. 다른 번호나 외부 링크로 온 초대는 사칭일 수 있어요.</p>
+        <div class="row"><button class="btn primary add-manual" type="button" data-platform="coupang">찜에 직접 추가</button></div>
+      </article>
+    </div>
+  </section>
+
+  <p class="notice" id="notice"></p>
+</main>
+
+<button class="to-top" id="to-top" type="button" aria-label="맨 위로" title="맨 위로" hidden><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 11 9 5.5 14.5 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+
+<dialog id="nick-dialog" aria-labelledby="nick-title">
+  <form id="nick-form" method="dialog" novalidate>
+    <h2 id="nick-title">닉네임 정하기</h2>
+    <p class="sub">모아체험에서 내 이름으로 보여요. 2~20자, 다른 사람과 같아도 괜찮아요.</p>
+    <label for="nick-input">닉네임</label>
+    <input class="field" id="nick-input" name="nickname" maxlength="40" autocomplete="nickname" required>
+    <p class="count" id="nick-count" aria-live="polite"></p>
+    <p class="err" id="nick-error" role="alert"></p>
+    <div class="dlg-actions">
+      <button class="btn" type="button" id="nick-cancel">나중에</button>
+      <button class="btn primary" type="submit" id="nick-save">저장</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="manual-dialog" aria-labelledby="manual-title">
+  <form id="manual-form" method="dialog" novalidate>
+    <h2 id="manual-title">찜에 직접 추가</h2>
+    <p class="sub">자동으로 모으지 않는 공고를 내 찜 목록에 기록해요. 공고 내용은 가져오지 않아요.</p>
+    <label for="m-platform">플랫폼</label>
+    <select class="field" id="m-platform" name="platform">
+      <option value="musinsa">무신사</option>
+      <option value="kakao-gift">카카오톡 선물하기</option>
+      <option value="coupang">쿠팡</option>
+      <option value="other">기타</option>
+    </select>
+    <label for="m-title">공고 이름</label>
+    <input class="field" id="m-title" name="title" maxlength="120" required placeholder="예: 울 블렌드 니트 체험단">
+    <label for="m-url">공고 링크 <span>선택, https 주소</span></label>
+    <input class="field" id="m-url" name="url" type="url" inputmode="url" placeholder="https://www.musinsa.com/preuser/events/…">
+    <label for="m-deadline">마감일 <span>선택</span></label>
+    <input class="field" id="m-deadline" name="deadline" type="date">
+    <label for="m-note">메모 <span>선택</span></label>
+    <input class="field" id="m-note" name="note" maxlength="200" placeholder="예: 사이즈 M으로 신청">
+    <p class="err" id="m-error" role="alert"></p>
+    <div class="dlg-actions">
+      <button class="btn" type="button" id="m-cancel">취소</button>
+      <button class="btn primary" type="submit" id="m-save">찜에 추가</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+const names = {reviewnote:'리뷰노트',dinnerqueen:'디너의여왕',chvu:'체험뷰',gangnammat:'강남맛집',assaview:'아싸뷰',ohmyblog:'오마이블로그',fourblog:'포블로그',cherivu:'체리뷰',ringble:'링블',bqueens:'뷰티의여왕',revu:'레뷰',popomon:'포포몬',tqueens:'택배의여왕',realreview:'리얼리뷰',cometoplay:'놀러와체험단',huki:'후키',modan:'모두의체험단',mrblog:'미블',cherrycook:'체리쿡',reviewplace:'리뷰플레이스',gaboja:'가보자체험단',modootogether:'모두모여체험단',storyn:'스토리앤미디어',musinsa:'무신사','kakao-gift':'카카오톡 선물하기',coupang:'쿠팡',enjoeat:'엔조잇',other:'기타'};
+let view = 'all', currentUser = null, authEnabled = false;
+let offset = 0, sequence = 0, timer, lastPayload = null;
+const results = $('#results'), chips = $('#chips'), platforms = $('#platforms'), notice = $('#notice');
+
+const KAKAO_SYMBOL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3.2C6.6 3.2 2.2 6.65 2.2 10.9c0 2.74 1.83 5.15 4.58 6.51l-.93 3.42c-.08.3.26.54.52.37l4.07-2.69c.51.06 1.03.09 1.56.09 5.4 0 9.8-3.45 9.8-7.7S17.4 3.2 12 3.2z"/></svg>';
+function kakaoButton(attrs){ return `<button class="kakao-login" type="button" ${attrs}>${KAKAO_SYMBOL}카카오 로그인</button>`; }
+function escapeHtml(value){return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function safeUrl(value){try{const url = new URL(value);return ['http:','https:'].includes(url.protocol) ? url.href : ''}catch{return ''}}
+function todayKst(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function daysLeft(value){if(!value)return null;return Math.round((Date.parse(value+'T00:00:00Z') - Date.parse(todayKst()+'T00:00:00Z')) / 86400000)}
+function stubFor(r){
+  const days = daysLeft(r.deadline);
+  const md = r.deadline ? r.deadline.slice(5).replace('-', '.') : '';
+  const est = r.precision === 'days_left' ? ' 추정' : '';
+  const verified = r.precision === 'exact_date' && r.deadlineVerifiedAt;
+  if (days === null) return {cls:'unknown', d:'미정', when:'마감일<br>원본 확인'};
+  if (days < 0) return {cls:'unknown', d:'지남', when:escapeHtml(md)+' 마감'};
+  const cls = days <= 1 ? 'urgent' : days <= 4 ? 'soon' : 'later';
+  return {cls, d: days === 0 ? '오늘' : 'D-' + days, when: escapeHtml(md) + ' 마감' + (est ? '<br>추정' : verified ? '<br>원본 확인' : '')};
+}
+let toastEl = null, toastTimer = null;
+function toast(message){
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'toast'; toastEl.setAttribute('role','status');
+    if (document.body && document.body.appendChild) document.body.appendChild(toastEl);
+  }
+  toastEl.textContent = message; toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toastEl.hidden = true; }, 3200);
+}
+function showChips(container, values, selected, key){
+  const scroll = container.scrollLeft;
+  values = [...new Set([...values, ...selected])];
+  container.innerHTML = values.map(value => `<button class="chip ${selected.has(value) ? 'active' : ''}" type="button" aria-pressed="${selected.has(value)}" data-${key}="${escapeHtml(value)}">${escapeHtml(key === 'source' ? (names[value] || value) : value)}</button>`).join('');
+  container.scrollLeft = scroll;
+}
+const RADII = [3, 5, 10, 20, 30];
+// applied = the conditions the list shows. draft = what the open filter panel edits; 확인 commits it.
+// The search box and the sort bar sit outside the panel and apply at once.
+function blankFilters(){ return {categories:new Set(), sources:new Set(), channels:new Set(), regions:new Set(), near:null, radius:10, includeNoLoc:false, sort:'deadline'}; }
+function copyFilters(f){ return {categories:new Set(f.categories), sources:new Set(f.sources), channels:new Set(f.channels), regions:new Set(f.regions), near:f.near ? {...f.near} : null, radius:f.radius, includeNoLoc:f.includeNoLoc, sort:f.sort}; }
+let applied = blankFilters(), draft = null;
+let appliedRev = 0;          // bumps whenever applied changes; a slow 확인 save commits only onto the revision it started from
+let confirming = null;       // filters being saved by 확인 (not applied yet); pagehide sends these, never the older applied
+function setApplied(f){ applied = f; appliedRev++; }
+const round3 = n => Math.round(n * 1000) / 1000;
+function toPrefs(f, q){
+  return {categories:[...f.categories], sources:[...f.sources], channels:[...f.channels], regions:[...f.regions],
+    q:String(q || '').trim().slice(0, 100), near:f.near ? {label:f.near.label, lat:round3(f.near.lat), lng:round3(f.near.lng)} : null,
+    radius:f.radius, includeNoLoc:f.includeNoLoc, sort:f.sort};
+}
+function fromPrefs(p){
+  const f = blankFilters();
+  if (!p || typeof p !== 'object') return {filters:f, q:''};
+  for (const k of ['categories','sources','channels','regions']) if (Array.isArray(p[k])) p[k].forEach(v => { if (typeof v === 'string' && v) f[k].add(v); });
+  if (p.near && Number.isFinite(p.near.lat) && Number.isFinite(p.near.lng)) f.near = {label:String(p.near.label || '기준 위치').slice(0, 50), lat:p.near.lat, lng:p.near.lng};
+  if (RADII.includes(p.radius)) f.radius = p.radius;
+  f.includeNoLoc = p.includeNoLoc === true;
+  if (p.sort === 'distance' || p.sort === 'deadline') f.sort = p.sort;
+  return {filters:f, q:typeof p.q === 'string' ? p.q.slice(0, 100) : ''};
+}
+
+// filters shown in the panel: the draft while it is open
+function renderPanel(){
+  const f = draft || applied;
+  if (lastPayload) {
+    showChips(chips, lastPayload.categories || [], f.categories, 'category');
+    showChips(platforms, lastPayload.sources || [], f.sources, 'source');
+    showChips($('#channels'), lastPayload.channels || [], f.channels, 'channel');
+    showChips($('#regions'), lastPayload.regions || [], f.regions, 'region');
+  }
+  $('#radius').innerHTML = RADII.map(r => `<button class="chip ${f.near && r === f.radius ? 'active' : ''}" type="button" aria-pressed="${Boolean(f.near) && r === f.radius}" data-radius="${r}">${r}km</button>`).join('');
+  $('#near-clear').hidden = !f.near;
+  $('#noloc').checked = f.includeNoLoc;
+  const pendingNear = draft && JSON.stringify(draft.near) !== JSON.stringify(applied.near);
+  $('#location-status').textContent = f.near
+    ? `기준: ${f.near.label}${pendingNear ? ' · 확인을 누르면 적용돼요.' : ' · 거리는 매장 위치를 찾은 공고는 매장까지, 나머지는 동·구 중심점까지의 대략적인 거리예요.'}`
+    : '거리는 매장 위치를 찾은 공고는 매장까지, 나머지는 동·구 중심점까지의 대략적인 거리예요.';
+}
+// the parts of the applied state that live outside the panel
+function renderApplied(){
+  $('#sortbar').hidden = !applied.near || view !== 'all';
+  [...document.querySelectorAll('#sortbar button')].forEach(b => b.setAttribute('aria-pressed', String(b.dataset.sort === applied.sort)));
+  updateSummary();
+}
+function filterCount(){return applied.categories.size + applied.sources.size + applied.regions.size + applied.channels.size + (applied.near ? 1 : 0)}
+function updateSummary(){
+  const parts = [...(applied.near ? [`${applied.near.label} ${applied.radius}km`] : []), ...applied.regions, ...applied.channels, ...applied.categories, ...[...applied.sources].map(s => names[s] || s)];
+  $('#summary').textContent = parts.length ? parts.join(', ') : '모든 공고';
+  $('#filter-toggle').textContent = filterCount() ? '필터 ' + filterCount() : '필터';
+  // each applied condition as a chip that removes just that condition
+  const X = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 1.5l7 7m0-7l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  const chip = (group, value, label) => `<button type="button" data-group="${group}" data-value="${escapeHtml(value)}" aria-label="${escapeHtml(label)} 조건 빼기"><span>${escapeHtml(label)}</span>${X}</button>`;
+  const items = [
+    ...(applied.near ? [chip('near', '', `${applied.near.label} ${applied.radius}km`)] : []),
+    ...[...applied.regions].map(v => chip('regions', v, v)), ...[...applied.channels].map(v => chip('channels', v, v)),
+    ...[...applied.categories].map(v => chip('categories', v, v)), ...[...applied.sources].map(v => chip('sources', v, names[v] || v))
+  ];
+  const box = $('#active-filters');
+  box.innerHTML = items.join('');
+  box.hidden = !items.length || view !== 'all';
+  $('#summary').classList.toggle('has-chips', items.length > 0);
+}
+// removing one applied condition applies and saves at once (like the external 초기화)
+function removeApplied(group, value){
+  if (confirming) return;
+  if (draft) closePanel();
+  const next = copyFilters(applied);
+  if (group === 'near') { next.near = null; next.sort = 'deadline'; }
+  else if (next[group] && next[group].delete) next[group].delete(value);
+  else return;
+  setApplied(next);
+  renderPanel(); renderApplied(); load();
+  appliedChanged(true);
+}
+
+// precise (store found on Kakao Map) vs approximate (district centre) distance
+function distance(r){
+  if (r.distanceKm == null) return '';
+  if (r.geoLevel === 'original') return `<span class="dist" title="원본 공고의 매장 좌표 기준">${escapeHtml(r.distanceKm)}km</span>`;
+  if (r.geoLevel === 'place') {
+    const km = r.distanceKm < 1 ? `${Math.round(r.distanceKm * 1000 / 50) * 50 || 50}m` : `${escapeHtml(r.distanceKm)}km`;
+    const link = r.placeUrl ? ` <a href="${escapeHtml(r.placeUrl)}" target="_blank" rel="noopener noreferrer" aria-label="카카오맵에서 ${escapeHtml(r.placeName || '매장')} 위치 보기">지도</a>` : '';
+    return `<span class="dist" title="카카오맵 매장 위치 기준">${km}${link}</span>`;
+  }
+  return `<span class="dist" title="동·구 중심점 기준 대략적인 거리">약 ${r.distanceKm < 1 ? '1km 이내' : escapeHtml(r.distanceKm) + 'km'}</span>`;
+}
+// map links from the server are used only if they are https on these hosts; otherwise a map search for the address
+const MAP_HOSTS = ['naver.me','map.naver.com','m.map.naver.com','place.naver.com','m.place.naver.com','map.kakao.com','place.map.kakao.com','kko.to'];
+function mapLink(value){
+  try { const u = new URL(value); return u.protocol === 'https:' && !u.username && !u.password && !u.port && MAP_HOSTS.includes(u.hostname) ? u.href : ''; }
+  catch { return ''; }
+}
+// one line: the store address, where it came from, and a map link. Shown only for visit campaigns the server gave an address.
+function addressLine(r){
+  if (r.manual || typeof r.address !== 'string' || !r.address || (r.type && r.type !== '방문형')) return '';
+  const fromPage = r.addressOrigin === 'campaign';
+  if (!fromPage && r.addressOrigin !== 'kakao') return '';
+  const given = mapLink(r.mapUrl);
+  // the distance badge already links the Kakao place; no second link to the same page
+  const dup = !fromPage && r.geoLevel === 'place' && r.distanceKm != null && r.placeUrl === given;
+  const link = given
+    ? (dup ? '' : `<a href="${escapeHtml(given)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(r.address)} 지도 보기">지도</a>`)
+    : `<a href="https://map.kakao.com/link/search/${encodeURIComponent(r.address)}" target="_blank" rel="noopener noreferrer" title="이 주소로 지도에서 검색해요" aria-label="${escapeHtml(r.address)} 지도에서 검색">지도에서 찾기</a>`;
+  const from = fromPage ? '원본 공고 기준' : '카카오 검색 결과';
+  const title = fromPage ? '원본 공고의 방문 위치에 적힌 주소예요' : '매장 이름으로 카카오 지도에서 찾은 주소예요. 원본 공고와 다를 수 있어요';
+  return `<p class="addr"><span class="street">${escapeHtml(r.address)}</span><span class="from" title="${title}">${from}</span>${link}</p>`;
+}
+function ticket(r, saved, mode){
+  const s = stubFor(r);
+  const url = safeUrl(r.url);
+  const tags = [];
+  if (r.manual) tags.push('<span class="tag hand">직접 추가</span>');
+  (r.channels || []).forEach(c => tags.push(`<span class="tag">${escapeHtml(c)}</span>`));
+  if (!r.manual && !(r.channels || []).length) tags.push('<span class="tag">리뷰 방식 미확인</span>');
+  if (r.type) tags.push(`<span class="tag">${escapeHtml(r.type)}</span>`);
+  const where = r.region_text || r.region_sido || (r.manual ? '' : '지역 없음');
+  const stats = r.manual
+    ? (r.note ? escapeHtml(r.note) : '')
+    : (r.applicants != null && r.slots != null ? `신청 <b>${escapeHtml(r.applicants)}</b> / 모집 <b>${escapeHtml(r.slots)}</b>` : '인원은 원본에서 확인') +
+      (r.lastSeen ? ` <span>· ${escapeHtml(r.lastSeen.slice(5,10).replace('-', '.'))} 확인</span>` : '');
+  const isSaved = saved || r.favorite;
+  const applied = r.status === 'applied';
+  if (applied) tags.unshift(`<span class="tag done">${applicationStages[r.stage] || '지원 완료'}</span>`);
+  const markButtons = mode === 'excluded'
+    ? `<button class="mark" type="button" data-restore="${escapeHtml(r.id || '')}">다시 보이기</button>`
+    : `<button class="heart favorite-toggle" type="button" data-id="${escapeHtml(r.id || '')}" data-saved="${isSaved ? 'true' : 'false'}" aria-pressed="${isSaved ? 'true' : 'false'}" aria-label="${isSaved ? '찜 해제' : '찜하기'}">${isSaved ? '&#9829;' : '&#9825;'}</button>
+        <button class="mark" type="button" data-mark="applied" aria-pressed="${applied}">${applied ? '지원 완료됨' : '지원 완료'}</button>
+        <button class="mark exclude" type="button" data-mark="excluded">제외</button>`;
+  return `<article class="ticket ${s.cls}${applied ? ' applied' : ''}" data-id="${escapeHtml(r.id || '')}">
+    <div class="stub"><span class="d">${s.d}</span><span class="when">${s.when}</span></div>
+    <div class="body">
+      <div class="meta">${distance(r)}<span class="src">${escapeHtml(names[r.source] || r.source || '')}</span>${where ? `<span>${escapeHtml(where)}</span>` : ''}${r.category && r.category !== '기타' ? `<span>${escapeHtml(r.category)}</span>` : ''}</div>
+      <div class="title">${escapeHtml(r.title || '제목 없음')}</div>
+      <div class="tags">${tags.join('')}</div>
+      ${addressLine(r)}
+      ${mode === 'applications' ? applicationForm(r) : ''}
+      ${r.benefit ? `<p class="benefit">${escapeHtml(r.benefit)}</p>` : ''}
+      <p class="stats-m">${stats}</p>
+      <div class="foot">
+        <span class="stats">${stats}</span>
+        ${markButtons}
+        <span class="grow"></span>
+        ${url ? `<a class="open" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="원본 공고 열기">원본<span class="long">&nbsp;열기</span></a>` : ''}
+      </div>
+    </div>
+  </article>`;
+}
+
+const applicationStages = {applied:'지원 완료', selected:'선정', reviewed:'리뷰 제출'};
+function applicationForm(r){
+  const options = Object.entries(applicationStages).map(([key, label]) => `<option value="${key}"${key === (r.stage || 'applied') ? ' selected' : ''}>${label}</option>`).join('');
+  return `<form class="application-form">
+    <label>상태<select name="stage">${options}</select></label>
+    <label>방문일<input type="date" name="visitDate" value="${escapeHtml(r.visitDate || '')}"></label>
+    <label>리뷰 마감일<input type="date" name="reviewDue" value="${escapeHtml(r.reviewDue || '')}"></label>
+    <button class="btn" type="submit">저장</button>
+  </form>`;
+}
+
+async function loadPersonal(mode){
+  const id = ++sequence;
+  const digest = mode === 'digest';
+  const title = digest ? '신규 공고 알림' : '내 신청';
+  $('#count').textContent = title;
+  $('#list-hint').textContent = digest ? '오늘 처음 확인된 공고 · 저장한 필터 기준' : '지원 상태, 방문일, 리뷰 마감일 관리';
+  $('#list-extra').textContent = '';
+  $('#more').hidden = true;
+  if (!currentUser) {
+    results.innerHTML = `<div class="empty">${title}은 카카오 로그인 후 볼 수 있어요.${authEnabled ? '<br><br>' + kakaoButton('data-action="login"') : ''}</div>`;
+    return;
+  }
+  const owner = currentUser.id;
+  results.innerHTML = '<div class="empty">불러오는 중이에요.</div>';
+  try {
+    const response = await fetch(digest ? '/api/digest' : '/api/marks?status=applied', { headers: {'X-Moa-Account':owner} });
+    if (!response.ok) throw new Error('personal list');
+    const data = await response.json();
+    if (id !== sequence || currentUser?.id !== owner) return;
+    const query = digest ? '' : $('#search').value.trim().toLowerCase();
+    const items = data.items.filter(r => !query || (r.title || '').toLowerCase().includes(query));
+    if (!digest) items.sort((a, b) => applicationDue(a).localeCompare(applicationDue(b)));
+    $('#count').textContent = `${title} ${(digest ? data.total : items.length).toLocaleString()}건`;
+    if (digest) {
+      $('#digest-count').textContent = '';
+      writeLocal(digestKey(owner), data.day);
+      if (data.total > items.length) $('#list-extra').textContent = `가장 최근에 확인한 ${items.length}건을 표시해요.`;
+    }
+    const empty = digest ? (data.configured ? '오늘 조건에 맞는 신규 공고가 없어요.' : '전체 공고에서 필터를 먼저 저장하세요.') : '공고에서 ‘지원 완료’를 누르면 여기에 모여요.';
+    results.innerHTML = items.length ? items.map(r => ticket(r, false, mode)).join('') : `<div class="empty">${empty}</div>`;
+  } catch {
+    if (id === sequence) results.innerHTML = '<div class="empty">목록을 불러오지 못했어요. 탭을 다시 열어주세요.</div>';
+  }
+}
+
+function applicationDue(item){
+  if (item.stage === 'reviewed') return '9999';
+  const today = todayKst();
+  const dates = [item.visitDate, item.reviewDue].filter(Boolean).sort();
+  return dates.find(date => date >= today) || dates[0] || '9998';
+}
+
+const digestKey = owner => 'moa:digest:read:' + owner;
+async function updateDigestBadge(){
+  const owner = currentUser?.id;
+  $('#digest-count').textContent = '';
+  if (!owner || readLocal(digestKey(owner)) === todayKst()) return;
+  try {
+    const response = await fetch('/api/digest?summary=1', {headers:{'X-Moa-Account':owner}});
+    if (!response.ok) return;
+    const {day, total} = await response.json();
+    if (currentUser?.id !== owner || readLocal(digestKey(owner)) === day) return;
+    $('#digest-count').textContent = total ? String(total) : '';
+  } catch {}
+}
+
+results.addEventListener('submit', async event => {
+  const form = event.target;
+  if (!form.matches('.application-form') || !currentUser) return;
+  event.preventDefault();
+  const owner = currentUser.id;
+  const id = form.closest('.ticket').dataset.id;
+  const body = Object.fromEntries(new FormData(form));
+  const button = form.querySelector('button');
+  button.disabled = true;
+  try {
+    const response = await fetch('/api/marks/' + encodeURIComponent(id), {method:'PATCH', headers:{'Content-Type':'application/json','X-Moa-Account':owner}, body:JSON.stringify(body)});
+    if (!response.ok) throw new Error('schedule save');
+    const {item} = await response.json();
+    if (currentUser?.id !== owner) return;
+    form.closest('.ticket').querySelector('.tag.done').textContent = applicationStages[item.stage];
+    toast('신청 기록을 저장했어요.');
+  } catch { toast('저장하지 못했어요. 다시 시도하세요.'); }
+  finally { button.disabled = false; }
+});
+
+async function loadSaved(){
+  const id = ++sequence;
+  results.innerHTML = '<div class="empty">찜 목록을 불러오는 중이에요.</div>';
+  if (!currentUser) {
+    results.innerHTML = `<div class="empty">찜 목록은 카카오 로그인 후 볼 수 있어요.${authEnabled ? '<br><br>' + kakaoButton('data-action="login"') : ''}</div>`;
+    $('#count').textContent = '찜';
+    $('#more').hidden = true;
+    return;
+  }
+  try {
+    const response = await fetch('/api/favorites');
+    if (!response.ok) throw new Error('favorites');
+    const data = await response.json();
+    if (id !== sequence) return;
+    const q = $('#search').value.trim().toLowerCase();
+    const items = data.items.filter(r => !q || `${r.title || ''} ${r.note || ''} ${r.region_text || ''}`.toLowerCase().includes(q))
+      .sort((a, b) => (a.deadline || '9999').localeCompare(b.deadline || '9999'));
+    $('#count').textContent = '찜 ' + items.length.toLocaleString() + '건';
+    $('#saved-count').textContent = data.items.length ? String(data.items.length) : '';
+    $('#list-hint').textContent = '마감 임박순, 직접 추가한 공고 포함';
+    $('#list-extra').innerHTML = '';
+    results.innerHTML = items.length ? items.map(r => ticket(r, true, 'saved')).join('') :
+      '<div class="empty">아직 찜한 공고가 없어요. 목록에서 하트를 누르거나 간편 응모 탭에서 직접 추가하세요.</div>';
+    $('#more').hidden = true;
+  } catch {
+    if (id !== sequence) return;
+    results.innerHTML = '<div class="empty">찜 목록을 불러오지 못했어요. 다시 로그인해 보세요.</div>';
+  }
+}
+
+async function loadExcluded(){
+  const id = ++sequence;
+  $('#more').hidden = true;
+  $('#list-extra').innerHTML = '';
+  $('#list-hint').textContent = '내가 제외한 공고';
+  if (!currentUser) {
+    $('#count').textContent = '제외';
+    results.innerHTML = `<div class="empty">제외 목록은 카카오 로그인 후 쓸 수 있어요.${authEnabled ? '<br><br>' + kakaoButton('data-action="login"') : ''}</div>`;
+    return;
+  }
+  results.innerHTML = '<div class="empty">제외 목록을 불러오는 중이에요.</div>';
+  try {
+    const response = await fetch('/api/marks?status=excluded');
+    if (!response.ok) throw new Error('marks');
+    const data = await response.json();
+    if (id !== sequence) return;
+    const q = $('#search').value.trim().toLowerCase();
+    const items = data.items.filter(r => !q || `${r.title || ''} ${r.region_text || ''}`.toLowerCase().includes(q));
+    $('#count').textContent = '제외 ' + items.length.toLocaleString() + '건';
+    $('#excluded-count').textContent = data.items.length ? String(data.items.length) : '';
+    $('#list-extra').innerHTML = data.items.length ? '<button class="linkish" type="button" data-action="restore-all">제외한 공고 모두 다시 보이기</button>' : '';
+    results.innerHTML = items.length ? items.map(r => ticket(r, false, 'excluded')).join('') :
+      '<div class="empty">제외한 공고가 없어요. 목록에서 관심 없는 공고에 제외를 누르면 여기로 모여요.</div>';
+  } catch {
+    if (id !== sequence) return;
+    results.innerHTML = '<div class="empty">제외 목록을 불러오지 못했어요. 다시 로그인해 보세요.</div>';
+  }
+}
+
+// Successful all-list snapshots live only in this tab, scoped to the current account and query.
+const ALL_CACHE_MS = 5 * 60 * 1000, ALL_CACHE_LIMIT = 6;
+const SKELETON = '<p class="sr">공고를 불러오는 중이에요.</p>' + '<div class="skeleton" aria-hidden="true"><i></i><div><b></b><b></b><b></b></div></div>'.repeat(4);
+let allListShown = false, loadingMore = false; // the all-list is on screen (kept, dimmed, while it reloads)
+function setListBusy(on){ results.classList.toggle('loading', on); results.setAttribute('aria-busy', String(on)); }
+const allSnapshots = new Map(), allRequests = new Map();
+let allCacheEpoch = 0, allCacheOwner = null, allVisibleKey = null;
+function invalidateAllCache(){
+  allCacheEpoch++; sequence++;
+  allSnapshots.clear(); allRequests.clear(); allVisibleKey = null;
+}
+function renderAllSnapshot(snapshot){
+  const payload = snapshot.payload;
+    setListBusy(false);
+    allListShown = payload.records.length > 0;
+    lastPayload = payload;
+    renderPanel();
+    renderApplied();
+    $('#count').textContent = '공고 ' + payload.total.toLocaleString() + '건';
+    $('#list-hint').textContent = payload.near && applied.near ? `${applied.near.label} 반경 ${payload.near.radius}km` : '마감 임박순, 최근 48시간 안에 확인한 공고';
+    const html = payload.records.map(r => ticket(r, false, 'all')).join('');
+    const extra = [];
+    if (payload.stale) extra.push('<button class="linkish" type="button" data-action="refresh">목록 새로고침</button>');
+    if (payload.near && payload.near.unlocated && !payload.near.includeNoLocation) extra.push(`위치를 알 수 없는 공고 ${payload.near.unlocated.toLocaleString()}건(배송형 등)은 빠졌어요.`);
+    if (payload.excludedHidden) extra.push(`제외한 공고 ${payload.excludedHidden.toLocaleString()}건은 숨겼어요. <button class="linkish" type="button" data-action="show-excluded">제외 목록 보기</button>`);
+    $('#list-extra').innerHTML = extra.join(' ');
+    $('#excluded-count').textContent = payload.excludedHidden ? String(payload.excludedHidden) : '';
+    results.innerHTML = html || `<div class="empty">조건에 맞는 공고가 없어요.${filterCount() ? '<br><button class="btn" type="button" data-action="reset">필터 초기화</button>' : ''}</div>`;
+    offset = snapshot.offset;
+    $('#more').hidden = offset >= payload.total;
+    const fetched = new Date(payload.fetchedAt).toLocaleString('ko-KR', {timeZone:'Asia/Seoul', month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'});
+    $('#freshness').hidden = false;
+    $('#freshness').textContent = `마지막 수집 ${fetched}${payload.stale ? ' · 저장된 목록 표시 중' : ''}`;
+    notice.innerHTML = `자동 수집 데이터: <a href="https://github.com/Richophie/review_search" target="_blank" rel="noopener noreferrer">체험단 모아보기(Richophie/review_search)</a>의 공개 스냅샷, 원본은 각 체험단 사이트예요. 마지막으로 가져온 시각 ${escapeHtml(fetched)}. 모집 여부와 신청 조건은 신청 전에 원본에서 다시 확인하세요.${payload.geoAttribution ? '<br>' + escapeHtml(payload.geoAttribution) : ''}${payload.places && payload.places.located ? '<br>매장 위치: 카카오 로컬 검색' : ''}<br>매장 주소: 디너의여왕·강남맛집 방문형 공고는 원본 공고의 방문 위치를 한 번에 몇 건씩 확인해요. 방금 확인된 주소는 목록을 새로 불러온 뒤에 보일 수 있어요.`;
+}
+async function load(options = {}){
+  if (view === 'saved') return loadSaved();
+  if (view === 'excluded') return loadExcluded();
+  if (view === 'applications' || view === 'digest') return loadPersonal(view);
+  if (view === 'hand') return;
+  const owner = currentUser ? currentUser.id : 'guest';
+  if (allCacheOwner !== owner) { invalidateAllCache(); allCacheOwner = owner; }
+  if (options.refresh) invalidateAllCache();
+  const id = ++sequence, epoch = allCacheEpoch;
+  const query = new URLSearchParams();
+  [...applied.categories].sort().forEach(x => query.append('category', x));
+  [...applied.sources].sort().forEach(x => query.append('source', x));
+  [...applied.regions].sort().forEach(x => query.append('region', x));
+  [...applied.channels].sort().forEach(x => query.append('channel', x));
+  query.set('q', $('#search').value.trim());
+  if (applied.near) {
+    query.set('lat', applied.near.lat.toFixed(3)); query.set('lng', applied.near.lng.toFixed(3));
+    query.set('radius', applied.radius); query.set('sort', applied.sort);
+    if (applied.includeNoLoc) query.set('noloc', '1');
+  }
+  const key = JSON.stringify([owner, query.toString()]);
+  let previous = allSnapshots.get(key);
+  if (previous && Date.now() - previous.at >= ALL_CACHE_MS) { allSnapshots.delete(key); previous = null; }
+  const more = Boolean(options.more && previous && allVisibleKey === key);
+  if (!options.refresh && !more && previous) {
+    allVisibleKey = key;
+    renderAllSnapshot(previous);
+    if (options.restore && typeof window !== 'undefined' && window.scrollTo) window.scrollTo(0, previous.scrollY);
+    return;
+  }
+  const pageOffset = more ? previous.offset : 0;
+  query.set('offset', pageOffset);
+  if (options.refresh) query.set('refresh', '1');
+  if (!more) {
+    offset = 0; allVisibleKey = null;
+    if (allListShown) setListBusy(true); // keep the current list in place instead of flashing a placeholder
+    else results.innerHTML = SKELETON;
+  }
+  const requestKey = key + ':' + pageOffset;
+  let request = allRequests.get(requestKey);
+  if (!request) {
+    request = (async () => {
+      const response = await fetch('/api/campaigns?' + query);
+      if (!response.ok) throw new Error('API error');
+      const payload = await response.json();
+      if (!Array.isArray(payload.records) || !Number.isFinite(payload.total)) throw new Error('Invalid campaign response');
+      const snapshot = {
+        payload: {...payload, records: more ? [...previous.payload.records, ...payload.records] : payload.records},
+        offset: pageOffset + payload.records.length,
+        at: more ? previous.at : Date.now(),
+        scrollY: more ? previous.scrollY : 0
+      };
+      if (epoch === allCacheEpoch && owner === allCacheOwner) {
+        allSnapshots.delete(key); allSnapshots.set(key, snapshot);
+        while (allSnapshots.size > ALL_CACHE_LIMIT) allSnapshots.delete(allSnapshots.keys().next().value);
+      }
+      return snapshot;
+    })();
+    allRequests.set(requestKey, request);
+    request.finally(() => { if (allRequests.get(requestKey) === request) allRequests.delete(requestKey); }).catch(() => {});
+  }
+  try {
+    const snapshot = await request;
+    if (id !== sequence || epoch !== allCacheEpoch || view !== 'all') return;
+    allVisibleKey = key;
+    renderAllSnapshot(snapshot);
+    if (options.restore && typeof window !== 'undefined' && window.scrollTo) window.scrollTo(0, snapshot.scrollY);
+  } catch {
+    if (id !== sequence || epoch !== allCacheEpoch || view !== 'all') return;
+    setListBusy(false); allListShown = false;
+    $('#more').hidden = true; // stop the automatic observer retrying a failed page until the user retries
+    results.innerHTML = '<div class="empty">공고를 불러오지 못했어요. 잠시 뒤 다시 시도하세요.<br><button class="btn" type="button" data-action="refresh">다시 불러오기</button></div>';
+    notice.textContent = '공고 데이터 서버에 연결하지 못했어요.';
+  }
+}
+
+function setView(next){
+  if (confirming) return; // keep the panel and its pending 확인 save
+  if (view === 'all' && allVisibleKey && allSnapshots.has(allVisibleKey)) allSnapshots.get(allVisibleKey).scrollY = typeof window !== 'undefined' ? (window.scrollY || 0) : 0;
+  sequence++; // even the hand tab cancels rendering of responses from the previous tab
+  setListBusy(false); allListShown = false;
+  view = next;
+  $('#active-filters').hidden = next !== 'all' || !filterCount();
+  document.querySelectorAll('.tab[data-view]').forEach(tab => tab.setAttribute('aria-selected', String(tab.dataset.view === next)));
+  $('#freshness').hidden = next !== 'all' || !$('#freshness').textContent;
+  $('#view-list').hidden = next === 'hand';
+  $('#view-hand').hidden = next !== 'hand';
+  $('#filterbar').hidden = next !== 'all';
+  $('#sortbar').hidden = next !== 'all' || !applied.near;
+  if (next !== 'all') closePanel();
+  load({restore:next === 'all'});
+}
+
+// ---- filter panel: choices change only the draft until 확인 ----
+function lockFilters(on){
+  for (const sel of ['#filter-toggle', '#reset', '#draft-reset', '#draft-cancel', '#draft-apply', '#locate', '#near-clear', '#noloc']) { const el = $(sel); if (el) el.disabled = on; }
+  $('#filter-panel').setAttribute('aria-busy', String(on));
+  $('#sortbar').setAttribute('aria-disabled', String(on));
+}
+function openPanel(){
+  if (confirming) return;
+  draft = copyFilters(applied);
+  $('#panel-msg').textContent = '';
+  $('#filter-panel').hidden = false;
+  $('#filter-toggle').setAttribute('aria-expanded', 'true');
+  renderPanel();
+}
+// closing without 확인 drops the draft; the list keeps the applied conditions
+function closePanel(force){
+  if (confirming && !force) return; // the panel stays until the 확인 save finishes
+  draft = null;
+  if (placeAbort) { placeAbort.abort(); placeAbort = null; }
+  $('#panel-msg').textContent = '';
+  $('#filter-panel').hidden = true;
+  $('#filter-toggle').setAttribute('aria-expanded', 'false');
+  renderPanel();
+}
+function toggleDraft(key, value){ if (!draft || confirming) return; draft[key].has(value) ? draft[key].delete(value) : draft[key].add(value); renderPanel(); }
+function setDraftNear(point){
+  if (!draft || confirming) return;
+  draft.near = point ? {label:point.label, lat:round3(point.lat), lng:round3(point.lng)} : null;
+  if (point) { draft.regions.clear(); draft.sort = 'distance'; } else draft.sort = 'deadline';
+  renderPanel();
+}
+async function confirmDraft(){
+  if (!draft || confirming) return;
+  const next = copyFilters(draft);
+  if (prefsOwner && prefsOwner !== 'guest' && prefsReady) {
+    const button = $('#draft-apply');
+    const startRev = appliedRev;
+    confirming = next;
+    lockFilters(true);
+    button.textContent = '저장 중…';
+    $('#panel-msg').textContent = '';
+    setPrefsStatus('필터를 저장하는 중이에요.', 'busy');
+    clearTimeout(autoTimer); autoTimer = null; // this save also carries the current search text
+    const seq = ++editSeq;
+    let stale = false;
+    const result = await queueSave(() => ({prefs: toPrefs(next, $('#search').value), seq}), () => {
+      // commit only onto the state this 확인 started from (an account switch or reset in between wins)
+      if (appliedRev === startRev) setApplied(next); else stale = true;
+    });
+    confirming = null;
+    lockFilters(false);
+    button.textContent = '확인';
+    if (result.skipped || stale) return; // the account or the conditions changed meanwhile
+    if (!result.ok) {
+      $('#panel-msg').textContent = '필터를 저장하지 못했어요. 고른 조건은 그대로 있어요. 확인을 다시 눌러 주세요.';
+      saveFailed(result, false);
+      return;
+    }
+    closePanel(); renderApplied(); load();
+    setPrefsStatus('필터를 저장했어요. 다음에 로그인해도 그대로예요.', 'ok');
+    return;
+  }
+  setApplied(next);
+  closePanel(); renderApplied(); load();
+  if (prefsOwner === 'guest' || !prefsOwner) { writeLocal(GUEST_KEY, toPrefs(applied, $('#search').value)); toast('필터를 적용했어요. 이 브라우저에 기억해 둘게요.'); }
+  else toast('필터를 적용했어요. 저장된 필터를 불러오지 못해 이번 조건은 저장하지 않았어요.');
+}
+// the external 초기화 resets right away and saves the empty conditions
+function resetFilters(){
+  if (confirming) return;
+  if (draft) closePanel();
+  setApplied(blankFilters());
+  $('#search').value = '';
+  renderPanel(); renderApplied(); load();
+  appliedChanged(true);
+}
+
+chips.addEventListener('click', e => { const v = e.target.dataset.category; if (v) toggleDraft('categories', v); });
+platforms.addEventListener('click', e => { const v = e.target.dataset.source; if (v) toggleDraft('sources', v); });
+$('#channels').addEventListener('click', e => { const v = e.target.dataset.channel; if (v) toggleDraft('channels', v); });
+$('#regions').addEventListener('click', e => { const v = e.target.dataset.region; if (v) toggleDraft('regions', v); });
+$('#search').addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => load(), 300); appliedChanged(false); });
+$('#reset').addEventListener('click', resetFilters);
+$('#active-filters').addEventListener('click', e => {
+  const b = e.target.closest ? e.target.closest('button[data-group]') : null;
+  if (b) removeApplied(b.dataset.group, b.dataset.value);
+});
+let moreWatcher = null;
+async function loadMore(){
+  if (loadingMore || view !== 'all' || $('#more').hidden) return;
+  loadingMore = true;
+  $('#more').textContent = '불러오는 중…';
+  try { await load({more:true}); }
+  finally {
+    loadingMore = false; $('#more').textContent = '공고 더 보기';
+    if (moreWatcher) { moreWatcher.unobserve($('#more')); moreWatcher.observe($('#more')); } // re-check: the button may still be near the viewport
+  }
+}
+$('#more').addEventListener('click', loadMore);
+if (typeof IntersectionObserver !== 'undefined') {
+  moreWatcher = new IntersectionObserver(entries => { if (entries.some(e => e.isIntersecting)) loadMore(); }, {rootMargin: '600px 0px'});
+  moreWatcher.observe($('#more'));
+}
+// back to top after a long scroll
+if (typeof window !== 'undefined' && window.addEventListener) {
+  const toTop = $('#to-top');
+  window.addEventListener('scroll', () => { toTop.hidden = (window.scrollY || 0) < 900; }, {passive: true});
+  toTop.addEventListener('click', () => {
+    const calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top: 0, behavior: calm ? 'auto' : 'smooth'});
+  });
+}
+$('#filter-toggle').addEventListener('click', () => { if (confirming) return; if ($('#filter-panel').hidden) openPanel(); else closePanel(); });
+$('#draft-apply').addEventListener('click', confirmDraft);
+$('#draft-cancel').addEventListener('click', () => { if (confirming) return; closePanel(); $('#filter-toggle').focus && $('#filter-toggle').focus(); });
+$('#draft-reset').addEventListener('click', () => { if (!draft || confirming) return; draft = blankFilters(); renderPanel(); });
+
+// ---- saving: guest -> this browser only; logged in -> the account on the server ----
+const GUEST_KEY = 'moa:prefs:guest';
+const accountKey = id => 'moa:prefs:acct:' + id;
+function readLocal(key){ try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch { return null; } }
+function writeLocal(key, value){ try { localStorage.setItem(key, JSON.stringify(value)); } catch {} }
+// one-time: the old browser-wide "near" setting becomes the guest's, never an account's
+(function(){
+  try {
+    const old = JSON.parse(localStorage.getItem('near') || 'null');
+    if (old && !localStorage.getItem(GUEST_KEY) && Number.isFinite(old.lat) && Number.isFinite(old.lng)) {
+      writeLocal(GUEST_KEY, toPrefs({...blankFilters(), near:{label:String(old.label || '기준 위치'), lat:old.lat, lng:old.lng}, radius:RADII.includes(old.radius) ? old.radius : 10, sort:'distance'}, ''));
+    }
+    localStorage.removeItem('near');
+  } catch {}
+})();
+
+let prefsOwner = null;   // 'guest' or the account id whose filters are on screen
+let prefsGen = 0;        // bumps on every account change; queued saves of an older generation are dropped
+let prefsReady = false;  // account filters came from the server; until then nothing is written there
+let saveChain = Promise.resolve();
+let autoTimer = null, editSeq = 0, savedSeq = 0, started = false, statusTimer = null;
+
+function setPrefsStatus(text, kind, retry){
+  const el = $('#prefs-status');
+  clearTimeout(statusTimer);
+  el.className = 'prefs-status' + (kind ? ' ' + kind : '');
+  el.textContent = text || '';
+  if (retry && el.append) { const b = document.createElement('button'); b.type = 'button'; b.className = 'linkish'; b.textContent = '다시 시도'; b.addEventListener('click', retry); el.append(' ', b); }
+  el.hidden = !text;
+  if (kind === 'ok') statusTimer = setTimeout(() => { el.hidden = true; }, 3000);
+}
+function putPrefs(prefs, owner, keepalive){
+  return fetch('/api/preferences', {method:'PUT', keepalive:Boolean(keepalive), headers:{'Content-Type':'application/json', 'X-Moa-Account':owner}, body:JSON.stringify({preferences:prefs})});
+}
+// Saves run one at a time, in order. build() runs when the save starts, so a later save never sends an older state,
+// and a response never changes what is on screen. onSaved runs before the next queued save starts.
+function queueSave(build, onSaved){
+  const gen = prefsGen, owner = prefsOwner;
+  const task = saveChain.then(async () => {
+    if (gen !== prefsGen || !owner || owner === 'guest' || !prefsReady) return {ok:false, skipped:true};
+    const {prefs, seq} = build();
+    let response;
+    try { response = await putPrefs(prefs, owner, true); } catch { return {ok:false, status:0}; }
+    if (gen !== prefsGen) return {ok:false, skipped:true};
+    if (!response.ok) return {ok:false, status:response.status};
+    writeLocal(accountKey(owner), prefs);
+    if (seq > savedSeq) savedSeq = seq;
+    if (onSaved) onSaved();
+    return {ok:true};
+  });
+  saveChain = task.catch(() => {});
+  return task;
+}
+function saveFailed(result, offerRetry = true){
+  if (result.status === 401 || result.status === 409) {
+    toast(result.status === 401 ? '로그인이 끝나 필터를 저장하지 못했어요. 다시 로그인하세요.' : '다른 계정으로 로그인되어 필터를 저장하지 않았어요.');
+    updateAuth();
+    return;
+  }
+  setPrefsStatus('필터를 저장하지 못했어요.', 'error', offerRetry ? () => { editSeq++; runAutoSave(); } : null);
+}
+// search text / sort / external reset changed the applied state
+function appliedChanged(immediate){
+  editSeq++;
+  if (prefsOwner === 'guest' || !prefsOwner) { writeLocal(GUEST_KEY, toPrefs(applied, $('#search').value)); return; }
+  if (!prefsReady) return;
+  clearTimeout(autoTimer);
+  setPrefsStatus('검색 조건을 저장하는 중이에요.', 'busy');
+  autoTimer = setTimeout(runAutoSave, immediate ? 0 : 800);
+}
+async function runAutoSave(){
+  autoTimer = null;
+  const result = await queueSave(() => ({prefs: toPrefs(applied, $('#search').value), seq: editSeq}));
+  if (result.skipped) return;
+  if (!result.ok) { saveFailed(result); return; }
+  if (savedSeq >= editSeq && !autoTimer) setPrefsStatus('검색 조건을 저장했어요.', 'ok');
+}
+// before logout: send what is pending, then wait for the queue
+async function flushPrefs(){
+  if (autoTimer) { clearTimeout(autoTimer); await runAutoSave(); }
+  await saveChain;
+}
+function applyPrefs(p){
+  const {filters, q} = fromPrefs(p);
+  setApplied(filters);
+  $('#search').value = q;
+  renderPanel(); renderApplied();
+}
+async function restoreAccount(owner, gen){
+  setPrefsStatus('저장된 필터를 불러오는 중이에요.', 'busy');
+  const typedBefore = $('#search').value;
+  try {
+    const response = await fetch('/api/preferences', {headers:{'X-Moa-Account':owner}});
+    if (gen !== prefsGen) return;
+    if (response.status === 409 || response.status === 401) {
+      // another tab changed the login meanwhile: apply and cache nothing, restore for the account now logged in
+      setPrefsStatus('');
+      updateAuth();
+      return;
+    }
+    if (!response.ok) throw new Error('preferences ' + response.status);
+    const data = await response.json();
+    if (gen !== prefsGen) return;
+    const typed = $('#search').value !== typedBefore ? $('#search').value : null;
+    applyPrefs(data.preferences);
+    if (data.preferences) writeLocal(accountKey(owner), data.preferences);
+    prefsReady = true;
+    setPrefsStatus('');
+    if (typed !== null) { $('#search').value = typed; appliedChanged(false); }
+  } catch {
+    if (gen !== prefsGen) return;
+    // never overwrite the server with empty filters: keep saving off until a load succeeds
+    const cached = readLocal(accountKey(owner));
+    if (cached) applyPrefs(cached);
+    setPrefsStatus(cached ? '저장된 필터를 불러오지 못해 이 기기에 남은 설정을 보여줘요. 지금 바꾼 조건은 저장되지 않아요.' : '저장된 필터를 불러오지 못했어요. 지금 바꾼 조건은 저장되지 않아요.', 'error', async () => {
+      if (gen !== prefsGen) return;
+      await restoreAccount(owner, gen);
+      if (gen === prefsGen && prefsReady) load();
+    });
+  }
+}
+async function switchPrefsOwner(owner){
+  invalidateAllCache(); allCacheOwner = owner;
+  lastPayload = null; offset = 0; results.innerHTML = '';
+  prefsGen++;
+  clearTimeout(autoTimer); autoTimer = null;
+  editSeq = 0; savedSeq = 0;
+  confirming = null; lockFilters(false);
+  if (draft) closePanel(true);
+  prefsOwner = owner; prefsReady = false;
+  applyPrefs(null); // never show the previous owner's filters, not even while loading
+  if (owner === 'guest') { applyPrefs(readLocal(GUEST_KEY)); prefsReady = true; setPrefsStatus(''); }
+  else await restoreAccount(owner, prefsGen);
+  if (started) load();
+}
+if (typeof window !== 'undefined' && window.addEventListener) window.addEventListener('pagehide', () => {
+  // leaving the page: the newest intended state. A 확인 still saving counts (its own request is keepalive too);
+  // the older applied state is never sent over it. An unconfirmed draft is never sent.
+  if (prefsOwner === 'guest') writeLocal(GUEST_KEY, toPrefs(applied, $('#search').value));
+  else if (prefsOwner && prefsReady && (confirming || editSeq > savedSeq)) {
+    try { putPrefs(toPrefs(confirming || applied, $('#search').value), prefsOwner, true).catch(() => {}); } catch {}
+  }
+});
+document.querySelectorAll('.tab[data-view]').forEach(tab => tab.addEventListener('click', e => setView(e.currentTarget.dataset.view)));
+
+function login(){ location.href = '/auth/kakao/login?return=' + encodeURIComponent(location.pathname); }
+
+async function runAction(a){
+  if (a === 'reset') resetFilters();
+  else if (a === 'refresh') load({refresh:true});
+  else if (a === 'login') login();
+  else if (a === 'show-excluded') setView('excluded');
+  else if (a === 'restore-all') {
+    if (!confirm('제외한 공고를 모두 목록에 다시 보이게 할까요?')) return;
+    const r = await fetch('/api/marks?status=excluded', {method:'DELETE'});
+    if (r.ok) { invalidateAllCache(); const d = await r.json(); toast(`제외한 공고 ${d.removed}건을 다시 보이게 했어요.`); load(); } else toast('되돌리지 못했어요. 다시 시도하세요.');
+  }
+}
+$('#list-extra').addEventListener('click', e => { const b = e.target.closest && e.target.closest('[data-action]'); if (b) runAction(b.dataset.action); });
+
+async function setMark(button){
+  if (!currentUser) { toast(authEnabled ? '지원 완료와 제외는 카카오 로그인 후 쓸 수 있어요.' : '지원 완료와 제외는 카카오 로그인이 설정된 뒤 쓸 수 있어요.'); return; }
+  const article = button.closest('.ticket');
+  const id = article.dataset.id;
+  const status = button.dataset.mark;
+  const undoApplied = status === 'applied' && button.getAttribute('aria-pressed') === 'true';
+  const removesApplication = undoApplied || (status === 'excluded' && article.classList?.contains('applied'));
+  if (removesApplication && !confirm('지원 기록과 저장한 일정을 삭제할까요?')) return;
+  const owner = currentUser.id;
+  button.disabled = true;
+  try {
+    const response = undoApplied
+      ? await fetch('/api/marks/' + encodeURIComponent(id), {method:'DELETE', headers:{'X-Moa-Account':owner}})
+      : await fetch('/api/marks/' + encodeURIComponent(id), {method:'PUT', headers:{'Content-Type':'application/json','X-Moa-Account':owner}, body: JSON.stringify({status})});
+    if (!response.ok) throw new Error();
+    invalidateAllCache();
+    if (view === 'applications' || view === 'digest') { load(); return; }
+    if (status === 'excluded') {
+      article.remove();
+      $('#excluded-count').textContent = String(Number($('#excluded-count').textContent || '0') + 1);
+      const m = /([\d,]+)/.exec($('#count').textContent);
+      if (m) $('#count').textContent = $('#count').textContent.replace(m[1], Math.max(0, Number(m[1].replace(/,/g, '')) - 1).toLocaleString());
+      toast('제외했어요. 제외 탭에서 다시 보이게 할 수 있어요.');
+      return;
+    }
+    const nowApplied = !undoApplied;
+    article.classList.toggle('applied', nowApplied);
+    button.setAttribute('aria-pressed', String(nowApplied));
+    button.textContent = nowApplied ? '지원 완료됨' : '지원 완료';
+    const tags = article.querySelector('.tags');
+    const doneTag = tags.querySelector('.tag.done');
+    if (nowApplied && !doneTag) tags.insertAdjacentHTML('afterbegin', '<span class="tag done">지원 완료</span>');
+    if (!nowApplied && doneTag) doneTag.remove();
+    toast(nowApplied ? '지원 완료로 표시했어요.' : '지원 완료 표시를 지웠어요.');
+  } catch { toast('저장하지 못했어요. 다시 시도하세요.'); }
+  finally { button.disabled = false; }
+}
+
+results.addEventListener('click', async e => {
+  const action = e.target.closest && e.target.closest('[data-action]');
+  if (action) { runAction(action.dataset.action); return; }
+  const markButton = e.target.closest && e.target.closest('[data-mark]');
+  if (markButton) { setMark(markButton); return; }
+  const restore = e.target.closest && e.target.closest('[data-restore]');
+  if (restore) {
+    restore.disabled = true;
+    const r = await fetch('/api/marks/' + encodeURIComponent(restore.dataset.restore), {method:'DELETE'});
+    if (r.ok) { invalidateAllCache(); toast('다시 목록에 보이게 했어요.'); loadExcluded(); } else { toast('되돌리지 못했어요.'); restore.disabled = false; }
+    return;
+  }
+  const button = e.target.closest && e.target.closest('.favorite-toggle');
+  if (!button) return;
+  if (!currentUser) { toast(authEnabled ? '찜하려면 카카오 로그인이 필요해요.' : '찜은 카카오 로그인이 설정된 뒤 쓸 수 있어요.'); return; }
+  button.disabled = true;
+  const saved = button.dataset.saved === 'true';
+  try {
+    const response = await fetch('/api/favorites/' + encodeURIComponent(button.dataset.id), {method: saved ? 'DELETE' : 'PUT'});
+    if (!response.ok) throw new Error();
+    invalidateAllCache();
+    if (view === 'saved') { loadSaved(); return; }
+    button.dataset.saved = String(!saved);
+    button.setAttribute('aria-pressed', String(!saved));
+    button.setAttribute('aria-label', saved ? '찜하기' : '찜 해제');
+    button.innerHTML = saved ? '&#9825;' : '&#9829;';
+    toast(saved ? '찜에서 뺐어요.' : '찜에 담았어요.');
+    refreshSavedCount();
+  } catch { toast('찜을 저장하지 못했어요. 다시 시도하세요.'); }
+  finally { button.disabled = false; }
+});
+
+async function refreshSavedCount(){
+  if (!currentUser) { $('#saved-count').textContent = ''; return; }
+  try { const r = await fetch('/api/favorites'); if (r.ok) { const d = await r.json(); $('#saved-count').textContent = d.items.length ? String(d.items.length) : ''; } } catch {}
+}
+
+async function updateAuth(){
+  const button = $('#auth');
+  try {
+    const response = await fetch('/api/me');
+    if (!response.ok) throw new Error();
+    const data = await response.json();
+    currentUser = data.user; authEnabled = data.authEnabled;
+    const who = $('#who');
+    if (currentUser) {
+      const nick = currentUser.nickname || '카카오 사용자';
+      who.innerHTML = `<span class="avatar" aria-hidden="true">${escapeHtml([...nick][0] || '')}</span><span class="nick">${escapeHtml(nick)}</span><svg class="caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>`;
+      who.setAttribute('aria-label', `내 계정: ${nick}`);
+      who.hidden = false;
+      // the server decides isAdmin; the link only helps navigation, /admin checks again
+      $('#menu-admin-item').hidden = !currentUser.isAdmin;
+      button.hidden = true;
+    } else {
+      who.hidden = true;
+      closeMenu(false);
+      $('#menu-admin-item').hidden = true;
+      button.hidden = false;
+      button.className = 'kakao-login';
+      button.disabled = !authEnabled;
+      button.innerHTML = KAKAO_SYMBOL + '카카오 로그인';
+      button.title = authEnabled ? '' : '서버에 카카오 로그인 설정이 없어 지금은 쓸 수 없어요.';
+    }
+    refreshSavedCount();
+    // filters belong to the account (or the guest); switching owner restores theirs before the list loads
+    const owner = currentUser ? currentUser.id : 'guest';
+    if (owner !== prefsOwner) await switchPrefsOwner(owner);
+    updateDigestBadge();
+    maybeAskNickname();
+  } catch {
+    if (prefsOwner === null) await switchPrefsOwner('guest');
+    button.hidden = false; button.className = 'kakao-login'; button.disabled = true; button.innerHTML = KAKAO_SYMBOL + '카카오 로그인'; button.title = '로그인 상태를 확인하지 못했어요.'; }
+}
+
+// account menu: nickname, admin dashboard (owners only), logout
+const accountMenu = $('#account-menu');
+function closeMenu(focus){
+  if (accountMenu.hidden) return;
+  accountMenu.hidden = true;
+  $('#who').setAttribute('aria-expanded', 'false');
+  if (focus) $('#who').focus();
+}
+function openMenu(){
+  accountMenu.hidden = false;
+  $('#who').setAttribute('aria-expanded', 'true');
+  const first = accountMenu.querySelector('[role="menuitem"]');
+  if (first) first.focus();
+}
+$('#who').addEventListener('click', () => accountMenu.hidden ? openMenu() : closeMenu(false));
+document.addEventListener('click', e => { if (!accountMenu.hidden && !e.target.closest('.menu-wrap')) closeMenu(false); });
+accountMenu.addEventListener('keydown', e => {
+  const items = [...accountMenu.querySelectorAll('[role="menuitem"]')].filter(x => !x.closest('[hidden]'));
+  const i = items.indexOf(document.activeElement);
+  if (e.key === 'Escape') { e.preventDefault(); closeMenu(true); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+  else if (e.key === 'Tab') closeMenu(false);
+});
+$('#menu-nick').addEventListener('click', () => { closeMenu(false); openNickname(false); });
+$('#menu-logout').addEventListener('click', () => { closeMenu(false); logout(); });
+
+$('#auth').addEventListener('click', () => { if (!currentUser) login(); });
+async function logout(){
+  await flushPrefs(); // the last search text is saved to this account before the session ends
+  await fetch('/auth/logout', {method:'POST'});
+  currentUser = null;
+  await updateAuth();
+  toast('로그아웃했어요.');
+  if (view === 'saved') load();
+}
+
+// "원본 열기" click -> one count for the dashboard. Navigation never waits for it.
+function recordOpen(e){
+  const link = e.target.closest && e.target.closest('a.open');
+  if (!link || (e.type === 'auxclick' && e.button !== 1)) return;
+  const id = link.closest('[data-id]')?.dataset.id || '';
+  if (!id || id.startsWith('manual:')) return;
+  try { fetch('/api/events/open', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({id}), keepalive:true}).catch(() => {}); } catch {}
+}
+document.addEventListener('click', recordOpen);
+document.addEventListener('auxclick', recordOpen);
+
+// app nickname: asked once per browser session until saved; "나중에" never blocks the app
+const nickDialog = $('#nick-dialog');
+const nickLength = v => [...v.normalize('NFC').replace(/\s+/g, ' ').trim()].length;
+function openNickname(first){
+  if (!currentUser || !nickDialog.showModal) return;
+  $('#nick-title').textContent = first ? '닉네임 정하기' : '닉네임 바꾸기';
+  $('#nick-cancel').textContent = first ? '나중에' : '취소';
+  $('#nick-input').value = currentUser.nicknameSet ? currentUser.nickname : (currentUser.kakaoNickname || '');
+  $('#nick-error').textContent = '';
+  updateNickCount();
+  nickDialog.showModal();
+  $('#nick-input').focus();
+}
+function maybeAskNickname(){
+  let skipped = false;
+  try { skipped = sessionStorage.getItem('nick-skip') === (currentUser && currentUser.id); } catch {}
+  if (currentUser && !currentUser.nicknameSet && !skipped && !nickDialog.open) openNickname(true);
+}
+function updateNickCount(){ $('#nick-count').textContent = `${nickLength($('#nick-input').value)}/20`; }
+$('#nick-input').addEventListener('input', updateNickCount);
+$('#nick-cancel').addEventListener('click', () => {
+  if (currentUser && !currentUser.nicknameSet) { try { sessionStorage.setItem('nick-skip', currentUser.id); } catch {} }
+  nickDialog.close();
+});
+$('#nick-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const nickname = $('#nick-input').value;
+  const n = nickLength(nickname);
+  if (n < 2 || n > 20) { $('#nick-error').textContent = '닉네임은 2~20자로 입력하세요.'; return; }
+  $('#nick-save').disabled = true;
+  try {
+    const response = await fetch('/api/profile', {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({nickname})});
+    const data = await response.json().catch(() => ({}));
+    if (response.status === 401) { nickDialog.close(); toast('로그인이 끝나 닉네임을 저장하지 못했어요. 다시 로그인하세요.'); await updateAuth(); return; }
+    if (!response.ok) { $('#nick-error').textContent = data.error || '저장하지 못했어요. 다시 시도하세요.'; return; }
+    nickDialog.close();
+    toast('닉네임을 저장했어요.');
+    await updateAuth();
+  } catch { $('#nick-error').textContent = '서버에 연결하지 못했어요.'; }
+  finally { $('#nick-save').disabled = false; }
+});
+
+// manual add
+const dialog = $('#manual-dialog');
+function openManual(platform){
+  if (!currentUser) { toast(authEnabled ? '찜에 추가하려면 카카오 로그인이 필요해요.' : '찜은 카카오 로그인이 설정된 뒤 쓸 수 있어요.'); return; }
+  $('#manual-form').reset();
+  $('#m-platform').value = platform || 'other';
+  $('#m-error').textContent = '';
+  if (dialog.showModal) dialog.showModal();
+  $('#m-title').focus();
+}
+$('#view-hand').addEventListener('click', e => { const b = e.target.closest && e.target.closest('.add-manual'); if (b) openManual(b.dataset.platform); });
+$('#m-cancel').addEventListener('click', () => dialog.close());
+$('#manual-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const body = { platform: $('#m-platform').value, title: $('#m-title').value.trim(), url: $('#m-url').value.trim(), deadline: $('#m-deadline').value || null, note: $('#m-note').value.trim() };
+  if (!body.title) { $('#m-error').textContent = '공고 이름을 입력하세요.'; return; }
+  $('#m-save').disabled = true;
+  try {
+    const response = await fetch('/api/favorites/manual', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) { $('#m-error').textContent = data.error || '추가하지 못했어요. 다시 시도하세요.'; return; }
+    invalidateAllCache();
+    dialog.close();
+    toast('찜에 추가했어요.');
+    setView('saved');
+  } catch { $('#m-error').textContent = '서버에 연결하지 못했어요.'; }
+  finally { $('#m-save').disabled = false; }
+});
+
+// near me: browser GPS (HTTPS or localhost only) or a typed place name; coordinates go only to this server
+// A late GPS / place answer applies only to the same open draft of the same account that asked for it.
+// locOp: the newest location action (GPS start, place lookup start, 해제); an older answer never overrides a newer choice
+let locOp = 0;
+const sameDraft = (target, gen, op) => draft !== null && draft === target && gen === prefsGen && op === locOp && !confirming;
+let placeAbort = null;
+$('#locate').addEventListener('click', () => {
+  const status = $('#location-status');
+  if (!draft || confirming) return;
+  if (!window.isSecureContext || !navigator.geolocation) {
+    status.textContent = '이 주소(HTTP)에서는 브라우저가 현재 위치를 알려주지 않아요. 동네 이름으로 기준을 정해 주세요.';
+    $('#place-input').focus();
+    return;
+  }
+  const target = draft, gen = prefsGen, op = ++locOp;
+  status.textContent = '현재 위치를 확인하는 중이에요.';
+  navigator.geolocation.getCurrentPosition(position => {
+    if (!sameDraft(target, gen, op)) return;
+    setDraftNear({lat: position.coords.latitude, lng: position.coords.longitude, label: '현재 위치'});
+  }, err => {
+    if (!sameDraft(target, gen, op)) return;
+    status.textContent = err && err.code === 1 ? '위치 권한이 꺼져 있어요. 브라우저 설정에서 허용하거나 동네 이름을 입력하세요.' : '현재 위치를 확인하지 못했어요. 동네 이름을 입력해 주세요.';
+  }, {enableHighAccuracy: true, timeout: 15000, maximumAge: 0});
+});
+$('#place-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const q = $('#place-input').value.trim();
+  if (!q || !draft || confirming) return;
+  const status = $('#location-status');
+  const target = draft, gen = prefsGen, op = ++locOp;
+  if (placeAbort) placeAbort.abort();
+  const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  placeAbort = controller;
+  try {
+    const response = await fetch('/api/geo/resolve?q=' + encodeURIComponent(q), controller ? {signal: controller.signal} : {});
+    const data = await response.json();
+    if (!sameDraft(target, gen, op)) return;
+    if (!response.ok) { status.textContent = data.error || '그 이름으로 찾은 지역이 없어요.'; return; }
+    setDraftNear({lat: data.lat, lng: data.lng, label: q});
+  } catch { if (sameDraft(target, gen, op)) status.textContent = '지역을 찾지 못했어요. 잠시 뒤 다시 시도하세요.'; }
+  finally { if (placeAbort === controller) placeAbort = null; }
+});
+$('#radius').addEventListener('click', e => {
+  const r = Number(e.target.dataset && e.target.dataset.radius);
+  if (!r) return;
+  if (!draft) return;
+  draft.radius = r;
+  renderPanel();
+  if (!draft.near) $('#location-status').textContent = '먼저 현재 위치를 쓰거나 동네 이름을 입력하세요.';
+});
+$('#near-clear').addEventListener('click', () => { locOp++; if (placeAbort) { placeAbort.abort(); placeAbort = null; } setDraftNear(null); });
+$('#noloc').addEventListener('change', e => { if (draft) draft.includeNoLoc = e.target.checked; });
+$('#sortbar').addEventListener('click', e => {
+  const s = e.target.dataset && e.target.dataset.sort;
+  if (!s || confirming) return;
+  setApplied({...copyFilters(applied), sort:s});
+  renderApplied();
+  load();
+  appliedChanged(true);
+});
+renderPanel();
+
+// sticky shadow
+if (typeof IntersectionObserver !== 'undefined') {
+  const sentinel = $('.intro');
+  new IntersectionObserver(([entry]) => $('#controls').classList.toggle('stuck', !entry.isIntersecting)).observe(sentinel);
+}
+
+// theme: follows the system until the visitor picks one; the choice stays in this browser (moa:theme)
+(function(){
+  const rootEl = typeof document !== 'undefined' && document.documentElement;
+  const button = $('#theme-toggle');
+  if (!rootEl || !rootEl.setAttribute || typeof window === 'undefined' || !window.matchMedia) return;
+  const system = window.matchMedia('(prefers-color-scheme: dark)');
+  const current = () => rootEl.getAttribute('data-theme') || (system.matches ? 'dark' : 'light');
+  function show(){
+    const dark = current() === 'dark';
+    button.setAttribute('aria-label', dark ? '밝은 화면으로 바꾸기' : '어두운 화면으로 바꾸기');
+    button.setAttribute('aria-pressed', String(dark));
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', dark ? '#0F1524' : '#F2F4F8');
+  }
+  button.addEventListener('click', () => {
+    const next = current() === 'dark' ? 'light' : 'dark';
+    rootEl.setAttribute('data-theme', next);
+    try { localStorage.setItem('moa:theme', next); } catch {}
+    show();
+  });
+  if (system.addEventListener) system.addEventListener('change', show);
+  show();
+})();
+
+// login result from OAuth redirect
+(function(){
+  const params = new URLSearchParams(location.search || '');
+  const result = params.get('login');
+  if (!result) return;
+  const reasons = {state:'로그인 요청이 만료됐어요. 다시 시도하세요.', denied:'카카오 로그인을 취소했어요.', kakao:'카카오와 연결하지 못했어요. 잠시 뒤 다시 시도하세요.'};
+  toast(result === 'ok' ? '카카오 계정으로 로그인했어요.' : (reasons[params.get('reason')] || '로그인하지 못했어요.'));
+  params.delete('login'); params.delete('reason');
+  if (typeof history !== 'undefined' && history.replaceState) history.replaceState(null, '', location.pathname + (params.toString() ? '?' + params : ''));
+})();
+
+setInterval(() => { if (view === 'all') load({refresh:true}); }, 30 * 60 * 1000);
+updateAuth().then(() => { started = true; load(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#F2F4F8">
+<script data-theme-init>try{var t=localStorage.getItem('moa:theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<title>운영 현황 · 모아체험</title>
+<style>
+:root{
+  --ink:#16213A; --ink-2:#4A5872; --ink-3:#7B879C;
+  --paper:#F2F4F8; --card:#FFFFFF; --line:#DCE2EC; --line-2:#E9EDF3;
+  --cobalt:#2347C5; --cobalt-soft:#E8EDFB;
+  --stamp:#D23A3A;
+  --track:#E4E8EF; --error-bg:#FCEBEB; --error-ink:#8A1F1F; --shadow:rgba(22,33,58,.12);
+  color-scheme:light;
+  --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+/* dark: follows the system unless the visitor chose a theme (data-theme on <html>) */
+@media (prefers-color-scheme: dark){
+:root:not([data-theme="light"]){
+  --ink:#E8ECF5; --ink-2:#B3BDD0; --ink-3:#95A1B9;
+  --paper:#0F1524; --card:#182033; --line:#2C3650; --line-2:#232C42;
+  --cobalt:#9DB3FF; --cobalt-soft:#1F2B52;
+  --stamp:#FF8A8A;
+  --track:#0B101C; --error-bg:#40202A; --error-ink:#FFB3B3; --shadow:rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+}
+:root[data-theme="dark"]{
+  --ink:#E8ECF5; --ink-2:#B3BDD0; --ink-3:#95A1B9;
+  --paper:#0F1524; --card:#182033; --line:#2C3650; --line-2:#232C42;
+  --cobalt:#9DB3FF; --cobalt-soft:#1F2B52;
+  --stamp:#FF8A8A;
+  --track:#0B101C; --error-bg:#40202A; --error-ink:#FFB3B3; --shadow:rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.55 var(--font);letter-spacing:-.01em;font-feature-settings:"tnum";-webkit-font-smoothing:antialiased}
+a{color:var(--cobalt)}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 64px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0 6px}
+.brand{font-weight:700;font-size:18px;letter-spacing:-.4px}
+.brand b{color:var(--cobalt)}
+.back{display:inline-flex;align-items:center;min-height:44px;font-size:14px}
+h1{font-size:24px;line-height:1.3;letter-spacing:-.6px;margin:14px 0 4px}
+.since{margin:0;color:var(--ink-2);font-size:14px}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 12px}
+.range{display:inline-flex;padding:3px;background:var(--track);border-radius:12px}
+.range button{min-height:40px;min-width:76px;border:none;background:transparent;border-radius:9px;cursor:pointer;font:inherit;font-weight:500;font-size:14px;color:var(--ink-2)}
+.range button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px var(--shadow)}
+.period{font-size:13px;color:var(--ink-3)}
+.totals{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.total{background:var(--card);padding:14px 14px 12px}
+.total dt{font-size:12px;color:var(--ink-2)}
+.total dd{margin:2px 0 0;font-size:26px;font-weight:700;letter-spacing:-.6px}
+.total dd small{font-size:13px;font-weight:500;color:var(--ink-3);margin-left:2px}
+section{margin-top:28px}
+h2{font-size:17px;margin:0 0 2px}
+.def{margin:0 0 10px;font-size:13px;color:var(--ink-2)}
+.table{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:12px;font-weight:500;color:var(--ink-3);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.num{text-align:right;white-space:nowrap}
+.rank{width:2.5em;color:var(--ink-3)}
+.title{overflow-wrap:anywhere}
+.title a{text-decoration:none}
+.title a:hover{text-decoration:underline}
+.src{color:var(--ink-2);white-space:nowrap}
+.n{font-weight:700}
+.sub{color:var(--ink-3);font-size:12px}
+.badge{display:inline-block;margin-left:6px;padding:0 6px;border-radius:6px;background:var(--cobalt-soft);color:var(--cobalt);font-size:11px;font-weight:600;vertical-align:1px}
+.empty{padding:22px 14px;color:var(--ink-2);font-size:14px;text-align:center}
+.error{margin:14px 0;padding:12px 14px;border-radius:12px;background:var(--error-bg);color:var(--error-ink);font-size:14px}
+@media (max-width:720px){
+  .totals{grid-template-columns:repeat(2,1fr)}
+  .totals .total:first-child{grid-column:1 / -1}
+  thead{display:none}
+  table,tbody,tr,td{display:block;width:100%}
+  tr{padding:10px 12px;border-bottom:1px solid var(--line-2)}
+  tr:last-child{border-bottom:none}
+  td{border:none;padding:0}
+  td.num,td.rank{display:inline;width:auto;text-align:left}
+  td[data-label]::before{content:attr(data-label) " ";color:var(--ink-3);font-size:12px}
+  .camp td.rank{float:left;width:2em}
+  .camp td.title{margin-left:2em;font-weight:500}
+  .camp td:not(.rank):not(.title){margin-left:2em}
+  .camp td.src,.camp td.num{display:inline-block;margin-right:12px}
+  .camp td.src{margin-left:2em}
+  .users td.nick{font-weight:600;margin-bottom:2px}
+  .users td.num,.users td.when{display:inline-block;margin-right:12px;font-size:13px}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <div class="brand">모아<b>체험</b> 운영</div>
+    <a class="back" href="/">앱으로 돌아가기</a>
+  </header>
+
+  <h1>운영 현황</h1>
+  <p class="since" id="since">집계 정보를 불러오는 중이에요.</p>
+
+  <div class="bar">
+    <div class="range" role="group" aria-label="기간">
+      <button type="button" data-days="7" aria-pressed="true">최근 7일</button>
+      <button type="button" data-days="30" aria-pressed="false">최근 30일</button>
+    </div>
+    <span class="period" id="period"></span>
+  </div>
+
+  <p class="error" id="error" role="alert" hidden></p>
+
+  <section aria-labelledby="collection-h">
+    <h2 id="collection-h">공고 수집 상태</h2>
+    <p class="def" id="collection-status"></p>
+    <p class="def" id="address-coverage"></p>
+    <details><summary>플랫폼별 주소 확인 현황</summary><ul id="address-sources"></ul></details>
+  </section>
+
+  <dl class="totals" id="totals" aria-live="polite">
+    <div class="total"><dt>원본 열기</dt><dd id="t-opens">–</dd></div>
+    <div class="total"><dt>방문</dt><dd id="t-visits">–</dd></div>
+    <div class="total"><dt>방문한 사용자</dt><dd id="t-active">–</dd></div>
+    <div class="total"><dt>새 사용자</dt><dd id="t-new">–</dd></div>
+    <div class="total"><dt>전체 사용자</dt><dd id="t-users">–</dd></div>
+  </dl>
+
+  <section aria-labelledby="camp-h">
+    <h2 id="camp-h">많이 연 공고</h2>
+    <p class="def" id="open-def">조회는 공고의 ‘원본 열기’를 누른 횟수예요. 목록에 보이기만 한 것은 세지 않아요.</p>
+    <div class="table"><table class="camp">
+      <thead><tr><th class="rank">순위</th><th>공고</th><th>플랫폼</th><th class="num">기간 내 열기</th><th class="num">누적</th></tr></thead>
+      <tbody id="campaigns"></tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="user-h">
+    <h2 id="user-h">사용자</h2>
+    <p class="def" id="visit-def">방문은 로그인한 사용자가 앱을 연 횟수예요. 같은 계정이 30분 안에 다시 열면 한 번으로 세요.</p>
+    <div class="table"><table class="users">
+      <thead><tr><th>닉네임</th><th>첫 방문</th><th>최근 방문</th><th class="num">기간 내 방문</th><th class="num">누적 방문</th></tr></thead>
+      <tbody id="users"></tbody>
+    </table></div>
+  </section>
+</main>
+<script>
+'use strict';
+// Everything from the API is written with textContent; links are only rendered for http(s) URLs.
+const names = {reviewnote:'리뷰노트',dinnerqueen:'디너의여왕',chvu:'체험뷰',gangnammat:'강남맛집',assaview:'아싸뷰',ohmyblog:'오마이블로그',fourblog:'포블로그',cherivu:'체리뷰',ringble:'링블',bqueens:'뷰티의여왕',revu:'레뷰',popomon:'포포몬',tqueens:'택배의여왕',realreview:'리얼리뷰',cometoplay:'놀러와체험단',huki:'후키',modan:'모두의체험단',mrblog:'미블',cherrycook:'체리쿡',reviewplace:'리뷰플레이스',gaboja:'가보자체험단',modootogether:'모두모여체험단',storyn:'스토리앤미디어'};
+const $ = s => document.querySelector(s);
+const fmt = new Intl.DateTimeFormat('ko-KR', {timeZone:'Asia/Seoul', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false});
+const day = new Intl.DateTimeFormat('ko-KR', {timeZone:'Asia/Seoul', month:'long', day:'numeric'});
+const when = iso => iso ? fmt.format(new Date(iso)) : '기록 없음';
+const n = v => Number(v || 0).toLocaleString('ko-KR');
+function safeUrl(value){ try { const u = new URL(value); return u.protocol === 'https:' || u.protocol === 'http:' ? u.href : ''; } catch { return ''; } }
+function el(tag, props = {}, children = []){
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) { if (k === 'text') node.textContent = v; else if (k === 'class') node.className = v; else node.setAttribute(k, v); }
+  for (const c of children) node.append(c);
+  return node;
+}
+function setTotal(id, value, unit){ const dd = $(id); dd.textContent = n(value); dd.append(el('small', {text: unit})); }
+
+let days = 7, seq = 0;
+async function load(){
+  const mine = ++seq;
+  $('#error').hidden = true;
+  let response;
+  try { response = await fetch(`/api/admin/dashboard?days=${days}`, {headers:{Accept:'application/json'}}); }
+  catch { return showError('서버에 연결하지 못했어요. 잠시 후 새로고침하세요.'); }
+  if (mine !== seq) return;
+  if (response.status === 401) return showError('로그인이 끝났어요. 앱에서 다시 로그인한 뒤 이 화면을 여세요.');
+  if (response.status === 403) return showError('이 계정에는 관리자 권한이 없어요.');
+  if (!response.ok) return showError('집계를 불러오지 못했어요. 잠시 후 새로고침하세요.');
+  render(await response.json());
+}
+function showError(message){ const e = $('#error'); e.textContent = message; e.hidden = false; }
+
+function render(d){
+  if (d.collection) {
+    const {fetchedAt, stale, lastAttempt, coverage} = d.collection;
+    const reasons = {timeout:'요청 시간 초과', format:'원본 데이터 형식 오류', storage:'저장소 오류', connection:'연결 오류'};
+    const attempt = lastAttempt ? ` · 최근 시도 ${when(lastAttempt.attemptedAt)} (${lastAttempt.success ? '성공' : reasons[lastAttempt.reason] || lastAttempt.reason || '실패'})` : '';
+    $('#collection-status').textContent = `마지막 수집 ${fetchedAt ? when(fetchedAt) : '기록 없음'}${stale ? ' · 갱신 필요' : ''}${attempt}`;
+    const counts = coverage.reduce((sum, row) => ({visits:sum.visits + row.visits, original:sum.original + row.original, kakao:sum.kakao + row.kakao}), {visits:0, original:0, kakao:0});
+    const rate = counts.visits ? Math.round(1000 * (counts.original + counts.kakao) / counts.visits) / 10 : 0;
+    $('#address-coverage').textContent = `방문형 ${n(counts.visits)}건 중 주소 ${rate}% · 원본 ${n(counts.original)}건 · 카카오 ${n(counts.kakao)}건`;
+    $('#address-sources').replaceChildren(...coverage.map(row => el('li', {text:`${names[row.source] || row.source} · 방문형 ${n(row.visits)}건 · 원본 ${n(row.original)}건 · 카카오 ${n(row.kakao)}건 · 원본 좌표 ${n(row.originalCoordinates)}건`})));
+  }
+  $('#since').textContent = `집계 시작: ${when(d.collectingSince)}. 그 전의 방문과 원본 열기는 기록되지 않아 보여줄 수 없어요.`;
+  $('#period').textContent = `${day.format(new Date(d.range.from + 'T00:00:00+09:00'))} ~ ${day.format(new Date(d.range.to + 'T00:00:00+09:00'))} (한국 시간)`;
+  if (d.definitions) { $('#open-def').textContent = d.definitions.open; $('#visit-def').textContent = d.definitions.visit; }
+  setTotal('#t-opens', d.totals.opens, '회');
+  setTotal('#t-visits', d.totals.visits, '회');
+  setTotal('#t-active', d.totals.activeUsers, '명');
+  setTotal('#t-new', d.totals.newUsers, '명');
+  setTotal('#t-users', d.totals.registeredUsers, '명');
+
+  const camps = $('#campaigns');
+  camps.replaceChildren();
+  if (!d.campaigns.length) camps.append(el('tr', {}, [el('td', {class:'empty', colspan:'5', text:'이 기간에 원본 열기가 없어요.'})]));
+  d.campaigns.forEach((c, i) => {
+    const url = safeUrl(c.url);
+    const title = url ? el('a', {href:url, target:'_blank', rel:'noopener noreferrer', text:c.title}) : document.createTextNode(c.title);
+    camps.append(el('tr', {}, [
+      el('td', {class:'rank', text:String(i + 1)}),
+      el('td', {class:'title'}, [title]),
+      el('td', {class:'src', text: names[c.source] || c.source || '기타'}),
+      el('td', {class:'num', 'data-label':'기간 내', }, [el('span', {class:'n', text:n(c.opens)})]),
+      el('td', {class:'num sub', 'data-label':'누적', text:n(c.opensAllTime)})
+    ]));
+  });
+
+  const users = $('#users');
+  users.replaceChildren();
+  if (!d.users.length) users.append(el('tr', {}, [el('td', {class:'empty', colspan:'5', text:'아직 기록된 사용자가 없어요.'})]));
+  for (const u of d.users) {
+    const nick = el('td', {class:'nick'}, [document.createTextNode(u.nickname)]);
+    if (u.admin) nick.append(el('span', {class:'badge', text:'관리자'}));
+    users.append(el('tr', {}, [
+      nick,
+      el('td', {class:'when', 'data-label':'첫 방문', text:when(u.firstVisit)}),
+      el('td', {class:'when', 'data-label':'최근', text:when(u.lastVisit)}),
+      el('td', {class:'num', 'data-label':'기간 내', text:`${n(u.visitsInRange)}회`}),
+      el('td', {class:'num', 'data-label':'누적', text:`${n(u.visits)}회`})
+    ]));
+  }
+}
+
+document.querySelectorAll('.range button').forEach(b => b.addEventListener('click', () => {
+  days = Number(b.dataset.days);
+  document.querySelectorAll('.range button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  load();
+}));
+load();
+</script>
+</body>
+</html>

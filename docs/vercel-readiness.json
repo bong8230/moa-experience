@@ -1,0 +1,8 @@
+{
+  "ready": false,
+  "blockers": [
+    "Configure your Vercel project and PostgreSQL database.",
+    "Register and verify your Kakao login callback.",
+    "Review campaign data usage before deploying."
+  ]
+}
