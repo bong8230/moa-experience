@@ -1,51 +1,50 @@
-# Product-Seeding-Automation (모아체험)
+# 모아체험
 
-모아체험 is a viewer for Korean product-seeding campaigns (체험단). It gathers open campaigns from several 체험단 sites into one list, sorted by deadline. The list can be filtered by region, review channel, category and site, or searched by radius around a location. With a Kakao login, campaigns can be saved and marked as applied or excluded.
+여러 체험단 사이트의 공고를 한곳에서 찾고, 지원부터 방문과 리뷰 제출까지 관리하는 웹앱입니다. 원하는 지역과 리뷰 방식으로 공고를 좁힌 뒤, 원본 페이지를 열어 직접 신청할 수 있습니다.
 
-## Structure
+## 주요 기능
 
-| Path | Contents |
+- **공고 찾기** · 마감 임박순으로 보고, 지역·카테고리·플랫폼·리뷰 방식은 여러 개씩 선택할 수 있습니다.
+- **내 주변 검색** · 현재 위치나 입력한 동네를 기준으로 반경 안의 방문형 공고를 찾습니다. 확인된 매장 주소와 지도 링크를 표시하고, 매장 좌표가 없으면 동·구 중심 기준의 대략적인 거리를 보여줍니다.
+- **찜과 내 신청** · 카카오 로그인 후 필터와 찜을 계정에 저장합니다. 관심 없는 공고는 제외하고, 지원한 공고는 선정·리뷰 제출 상태와 방문일·리뷰 마감일을 관리할 수 있습니다.
+- **신규 공고 알림** · 저장한 필터에 맞는 오늘의 신규 공고를 사이트의 `알림` 탭에서 확인합니다.
+- **관리자 화면** · 최근 수집 결과와 실패 원인, 플랫폼별 주소 확인 현황, 이용 현황을 봅니다.
+
+목록에 연동되지 않는 공고는 `간편 응모` 탭에서 원본 확인 경로를 찾거나 찜에 직접 추가할 수 있습니다. 일부 마감일은 추정값으로 표시되므로 신청 전 원본 공고를 확인하세요.
+
+## 로컬에서 실행하기
+
+Node.js 22 이상이 필요합니다. 카카오 설정 없이도 공고 조회와 필터를 사용할 수 있습니다.
+
+```sh
+npm ci
+npm start
+```
+
+브라우저에서 <http://127.0.0.1:8787>을 엽니다. 카카오 로그인을 사용하려면 `preview/.env`에 아래 항목을 설정하고, 사용한 콜백 주소를 카카오 개발자 콘솔에도 등록합니다. 클라이언트 시크릿을 켠 앱은 `KAKAO_CLIENT_SECRET`도 설정합니다.
+
+```dotenv
+KAKAO_REST_API_KEY=발급받은_REST_API_키
+KAKAO_REDIRECT_URI=http://127.0.0.1:8787/auth/kakao/callback
+```
+
+`HOSTS`로 로컬 또는 사설 네트워크의 수신 주소를 지정할 수 있습니다. 카카오 매장 검색은 `KAKAO_LOCAL=0`으로 끌 수 있습니다. 인증 정보와 로컬 사용자 데이터는 Git에서 제외됩니다.
+
+## 구조와 배포
+
+화면은 HTML·CSS·JavaScript, 서버는 Node.js로 구성했습니다. 로컬 실행에서는 파일 저장을 사용할 수 있고, Vercel 배포에서는 PostgreSQL을 사용합니다. Jenkins 파이프라인에서 테스트와 배포를 실행합니다.
+
+| 경로 | 역할 |
 | --- | --- |
-| `preview/server.js` | Node HTTP server, `/api/*` routes and Kakao login (`createApp`) |
-| `preview/index.html` | Single-page UI |
-| `preview/geo.js`, `preview/geo/kr-places.json` | Region text → administrative-area centroid |
-| `preview/kakao-local.js` | Optional precise store coordinates via Kakao Local |
-| `preview/*.test.js` | Tests (`node:test`, no network) |
-| `infra/jenkins/` | Local Jenkins start/stop scripts |
-| `Jenkinsfile` | CI pipeline (tests; deployment gated) |
-| `docs/` | [Deployment status](docs/deployment.md), [Jenkins setup](docs/jenkins.md) |
+| `preview/index.html`, `preview/admin.html` | 공고 화면과 관리자 화면 |
+| `preview/server.js`, `api/index.js` | 공고 API, 카카오 로그인, 서버 실행 진입점 |
+| `preview/addresses.js`, `preview/deadlines.js`, `preview/geo.js` | 원본 주소·마감일 확인과 위치 계산 |
+| `migrations/`, `Jenkinsfile` | PostgreSQL 초기 설정과 배포 파이프라인 |
 
-## Run locally
+테스트는 `npm test`, 정적 파일 빌드는 `npm run build`로 실행합니다. 운영 환경은 별도로 설정해야 합니다. [Vercel 배포 안내](docs/deployment.md) · [Jenkins 설정](docs/jenkins.md) · [관리자 권한](docs/admin.md)
 
-Requires Node.js 22+. Install dependencies with `npm ci`.
+## 데이터 출처
 
-```powershell
-# optional: Kakao login / Kakao Local. Create preview/.env (never commit it):
-#   KAKAO_REST_API_KEY=...
-#   KAKAO_CLIENT_SECRET=...
-#   KAKAO_REDIRECT_URI=http://127.0.0.1:8787/auth/kakao/callback
-node preview/server.js
-```
-
-- **Address:** open <http://127.0.0.1:8787>. The server binds `127.0.0.1` by default. Set `HOSTS` for another private interface. It refuses `0.0.0.0`.
-- **Without Kakao settings:** the campaign list still works.
-- **Kakao Local:** set `KAKAO_LOCAL=0` to turn off store lookups.
-
-## Test
-
-```powershell
-node --test preview/*.test.js
-```
-
-## Data and attribution
-
-- **Campaigns:** fetched live from the public snapshot of [Richophie/review_search](https://github.com/Richophie/review_search), cached for 30 minutes and not redistributed. Each campaign links to its original site.
-- **Sites without collection:** Musinsa, Kakao gift and Coupang campaigns are not collected automatically. Their robots rules or terms do not allow it, so the UI only links to them.
-- **Region centroids:** Statistics Korea SGIS administrative boundaries (KOGL Type 1), processed by [vuski/admdongkor](https://github.com/vuski/admdongkor) (CC BY 4.0).
-- **Store locations:** Kakao Local keyword search, when enabled.
-
-## Security
-
-- **Secrets:** they live only in `preview/.env` (local) or Jenkins/Vercel credential stores. `.gitignore` excludes `.env` files and `preview/data/`.
-- **Network:** never bind a public interface, and do not use `tailscale funnel`.
-- **Deployment:** Vercel deployment requires your own PostgreSQL instance and deployment configuration. See [docs/deployment.md](docs/deployment.md).
+- **공고 목록** · 공개 스냅샷을 실행 중에 불러오며, 각 공고에서 원본 플랫폼으로 연결합니다. 공개 저장소에는 공고 스냅샷을 포함하지 않습니다. [Richophie/review_search](https://github.com/Richophie/review_search)
+- **거리 계산** · 통계청 SGIS 행정동 경계(공공누리 제1유형)를 가공한 중심점 데이터(CC BY 4.0)를 사용합니다. [vuski/admdongkor](https://github.com/vuski/admdongkor)
+- **매장 주소** · 원본 공고에서 확인한 주소와 카카오 로컬 검색으로 찾은 주소를 구분해 표시합니다. [주소 확인 기준](docs/addresses.md)
